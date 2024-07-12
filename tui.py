@@ -48,7 +48,7 @@ def main(stdscr):
     slot_window.addstr(1, 2, 'Slot Number\tBDF'.expandtabs(5))
     for i, slot in enumerate(slot_numbers):
         slot = slot.split(" : ")
-        slot_window.addstr(i + 2, 2, '{:<15s} {:<10s}'.format(slot[0], slot[1]))
+        slot_window.addstr(i + 2, 2, '{:<14s} {:<10s}'.format(slot[0], slot[1]))
     slot_window.refresh()
 
     gpu_window_height = height  
