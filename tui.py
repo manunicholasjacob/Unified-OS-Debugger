@@ -74,31 +74,55 @@ def main(stdscr):
     input_window_border = curses.newwin(input_window_height, input_window_width, height + 2, 1)
     display_box(input_window_border, height + 2, 1, input_window_height, input_window_width, "User Inputs")
 
-    input_window.addstr(2-2, 0, "Enter your password (sudo access): ")
+    input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, b: Both): ")
+    operation = input_window.getstr().decode().lower()
+    while operation not in ['s', 'g', 'b']:
+        input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, b: Both): ")
+        operation = input_window.getstr().decode().lower()
+
+    input_window.addstr(2, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
 
-    input_window.addstr(4-2, 0, "Number of Loops: ")
-    inputnum_loops = int(input_window.getstr().decode())
+    if operation == 'g':
+        input_window.addstr(4, 0, "Run with Default Settings? (30 minutes at 95%) [y/n]: ")
+        gpu_changesetting = input_window.getstr().decode()
 
-    input_window.addstr(6-2, 0, "Do you want to kill on error? (y/n): ")
-    kill = input_window.getstr().decode()
+        if gpu_changesetting == 'n':
+            input_window.addstr(6, 0, "Run gpu_burn for how long (in seconds)?: ")
+            gpu_run_time = input_window.getstr().decode()
+            input_window.addstr(8, 0, "Run GPUs at what Percent?: ")
+            gpu_gpu_percent = input_window.getstr().decode()
+            notify = f"Running for {gpu_run_time} seconds at {gpu_gpu_percent}%"
+        else:
+            notify = "Running for 1800 seconds at 95%"
 
-    input_window.addstr(8-2, 0, "Choose slot numbers to test (comma separated): ")
-    slot_input = input_window.getstr().decode()
-    slotlist = list(map(int, slot_input.split(',')))
+        input_window.clear()
+        input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
+        input_window.addstr(2, 0, notify)
 
-    input_window.addstr(10-2, 0, "Choose operation (s: SBR, g: GPU Burn, b: Both): ")
-    operation = input_window.getstr().decode().lower()
+    elif operation == 's':
+        input_window.addstr(4, 0, "Number of Loops: ")
+        inputnum_loops = int(input_window.getstr().decode())
 
-    input_window.clear()
-    input_window.addstr(2-2, 0, f"Password: {'*' * len(user_password)}")
-    input_window.addstr(4-2, 0, f"Number of Loops: {inputnum_loops}")
-    input_window.addstr(6-2, 0, f"Kill on error: {kill}")
-    input_window.addstr(8-2, 0, f"Slot numbers to test: {slotlist}")
-    input_window.addstr(10-2, 0, f"Operation: {operation}")
-    input_window.addstr(12-2, 0, "Press any key to start the test...")
-    input_window.refresh()
-    input_window.getch()
+        input_window.addstr(6, 0, "Do you want to kill on error? (y/n): ")
+        kill = input_window.getstr().decode()
+
+        input_window.addstr(8, 0, "Choose slot numbers to test (comma separated): ")
+        slot_input = input_window.getstr().decode()
+        slotlist = list(map(int, slot_input.split(',')))
+
+        input_window.clear()
+        input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
+        input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
+        input_window.addstr(4, 0, f"Kill on error: {kill}")
+        input_window.addstr(6, 0, f"Slot numbers to test: {slotlist}")
+        input_window.addstr(8, 0, f"Operation: {operation}")
+        input_window.addstr(10, 0, "Press any key to start the test...")
+        input_window.refresh()
+        input_window.getch()
+
+    else:
+
 
     # Set error reporting to 0
     device_window_height = 15
