@@ -76,12 +76,12 @@ def main(stdscr):
 
     input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
     operations = input_window.getstr().decode().lower()
-    operations = [operation .strip() for operation in operations.split(',')]
+    operations = [operation.strip() for operation in operations.split(',')]
     while all(operation not in ['s','g','d'] for operation in operations):
         input_window.clear()
         input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
         operation = input_window.getstr().decode().lower()
-        operations = [operation .strip() for operation in operations.split(',')]
+        operations = [operation.strip() for operation in operations.split(',')]
 
     input_window.addstr(2, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
