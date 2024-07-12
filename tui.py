@@ -74,12 +74,12 @@ def main(stdscr):
     input_window_border = curses.newwin(input_window_height, input_window_width, height + 2, 1)
     display_box(input_window_border, height + 2, 1, input_window_height, input_window_width, "User Inputs")
 
-    input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, b: Both): ")
-    operation = input_window.getstr().decode().lower()
-    while operation not in ['s', 'g', 'b']:
+    input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
+    operations = input_window.getstr().decode().lower().split(",")
+    while all(operation in ['s','g','d'] for operation in operations):
         input_window.clear()
         input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, b: Both): ")
-        operation = input_window.getstr().decode().lower()
+        operation = input_window.getstr().decode().lower().split(',')
 
     input_window.addstr(2, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
@@ -148,7 +148,7 @@ def main(stdscr):
         slot_input = input_window.getstr().decode()
         slotlist = list(map(int, slot_input.split(',')))
 
-        input_window.clear()
+        input_window.clear() 
         input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
         input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
         input_window.addstr(4, 0, f"Kill on error: {kill}")
