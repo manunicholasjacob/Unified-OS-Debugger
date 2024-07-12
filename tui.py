@@ -78,7 +78,7 @@ def main(stdscr):
     operations_input = input_window.getstr().decode().lower()
     operations = [operation.strip() for operation in operations_input.split(',')]
     while all(operation not in ['s','g','d'] for operation in operations):
-        # input_window.clear()
+        input_window.clear()
         input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
         operations_input = input_window.getstr().decode().lower()
         operations = [operation.strip() for operation in operations_input.split(',')]
@@ -86,80 +86,50 @@ def main(stdscr):
     input_window.addstr(2, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
 
-    if operation == 'g':
-        input_window.addstr(4, 0, "Run with Default Settings? (30 minutes at 95%) [y/n]: ")
-        gpu_changesetting = input_window.getstr().decode()
-
-        if gpu_changesetting == 'n':
-            input_window.addstr(6, 0, "Run gpu_burn for how long (in seconds)?: ")
-            gpu_run_time = input_window.getstr().decode()
-            input_window.addstr(8, 0, "Run GPUs at what Percent?: ")
-            gpu_gpu_percent = input_window.getstr().decode()
-            notify = f"Running for {gpu_run_time} seconds at {gpu_gpu_percent}%"
-        else:
-            notify = "Running for 1800 seconds at 95%"
-
+    for operation in operations:
+        time.sleep(2)
         input_window.clear()
-        input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
-        input_window.addstr(2, 0, notify)
-        input_window.addstr(4, 0, "Press any key to start the test...")
-        input_window.refresh()
-        input_window.getch()
+        if operation == 'g':
+            input_window.addstr(0, 0, "GPU_Burn Settings")
+            input_window.addstr(2, 0, "Run with Default Settings? (30 minutes at 95%) [y/n]: ")
+            gpu_changesetting = input_window.getstr().decode()
 
-    elif operation == 's':
-        input_window.addstr(4, 0, "Number of Loops: ")
-        inputnum_loops = int(input_window.getstr().decode())
+            if gpu_changesetting == 'n':
+                input_window.addstr(4, 0, "Run gpu_burn for how long (in seconds)?: ")
+                gpu_run_time = input_window.getstr().decode()
+                input_window.addstr(6, 0, "Run GPUs at what Percent?: ")
+                gpu_gpu_percent = input_window.getstr().decode()
+                notify = f"Running for {gpu_run_time} seconds at {gpu_gpu_percent}%"
+            else:
+                notify = "Running for 1800 seconds at 95%"
 
-        input_window.addstr(6, 0, "Do you want to kill on error? (y/n): ")
-        kill = input_window.getstr().decode()
+        elif operation == 's':
+            input_window.addstr(0, 0, "SBR Settings")
+            input_window.addstr(2, 0, "Number of Loops: ")
+            inputnum_loops = int(input_window.getstr().decode())
 
-        input_window.addstr(8, 0, "Choose slot numbers to test (comma separated): ")
-        slot_input = input_window.getstr().decode()
-        slotlist = list(map(int, slot_input.split(',')))
+            input_window.addstr(4, 0, "Do you want to kill on error? (y/n): ")
+            kill = input_window.getstr().decode()
 
-        input_window.clear()
-        input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
-        input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
-        input_window.addstr(4, 0, f"Kill on error: {kill}")
-        input_window.addstr(6, 0, f"Slot numbers to test: {slotlist}")
-        input_window.addstr(10, 0, "Press any key to start the test...")
-        input_window.refresh()
-        input_window.getch()
+            input_window.addstr(6, 0, "Choose slot numbers to test (comma separated): ")
+            slot_input = input_window.getstr().decode()
+            slotlist = list(map(int, slot_input.split(',')))
 
-    else:
-        input_window.addstr(4, 0, "Run gpu_burn with Default Settings? (30 minutes at 95%) [y/n]: ")
-        gpu_changesetting = input_window.getstr().decode()
+    input_window.clear()
+    input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
+    input_window.addstr(2, 0, notify)
+    input_window.addstr(4, 0, "Press any key to start the test...")
+    input_window.refresh()
+    input_window.getch()
 
-        if gpu_changesetting == 'n':
-            input_window.addstr(6, 0, "Run gpu_burn for how long (in seconds)?: ")
-            gpu_run_time = input_window.getstr().decode()
-            input_window.addstr(8, 0, "Run GPUs at what Percent?: ")
-            gpu_gpu_percent = input_window.getstr().decode()
-            notify = f"Running for {gpu_run_time} seconds at {gpu_gpu_percent}%"
-        else:
-            notify = "Running for 1800 seconds at 95%"
-
-        input_window.clear()
-        input_window.addstr(0, 0, "Number of Loops: ")
-        inputnum_loops = int(input_window.getstr().decode())
-
-        input_window.addstr(2, 0, "Do you want to kill on error? (y/n): ")
-        kill = input_window.getstr().decode()
-
-        input_window.addstr(4, 0, "Choose slot numbers to test (comma separated): ")
-        slot_input = input_window.getstr().decode()
-        slotlist = list(map(int, slot_input.split(',')))
-
-        input_window.clear() 
-        input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
-        input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
-        input_window.addstr(4, 0, f"Kill on error: {kill}")
-        input_window.addstr(6, 0, f"Slot numbers to test: {slotlist}")
-        input_window.addstr(8, 0, notify)
-        input_window.addstr(10, 0, "Press any key to start the test...")
-        input_window.refresh()
-        input_window.getch()
-
+    input_window.clear()
+    input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
+    input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
+    input_window.addstr(4, 0, f"Kill on error: {kill}")
+    input_window.addstr(6, 0, f"Slot numbers to test: {slotlist}")
+    input_window.addstr(10, 0, "Press any key to start the test...")
+    input_window.refresh()
+    input_window.getch()
 
     # Set error reporting to 0
     device_window_height = 15
