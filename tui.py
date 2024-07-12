@@ -87,7 +87,7 @@ def main(stdscr):
     user_password = input_window.getstr().decode()
 
     for operation in operations:
-        time.sleep(2)
+        time.sleep(1.5)
         input_window.clear()
         if operation == 'g':
             input_window.addstr(0, 0, "GPU_Burn Settings")
@@ -99,9 +99,9 @@ def main(stdscr):
                 gpu_run_time = input_window.getstr().decode()
                 input_window.addstr(6, 0, "Run GPUs at what Percent?: ")
                 gpu_gpu_percent = input_window.getstr().decode()
-                notify = f"Running for {gpu_run_time} seconds at {gpu_gpu_percent}%"
+                notify = f"Run gpu_burn for {gpu_run_time} seconds at {gpu_gpu_percent}%"
             else:
-                notify = "Running for 1800 seconds at 95%"
+                notify = "Run gpu_burn for 1800 seconds at 95%"
 
         elif operation == 's':
             input_window.addstr(0, 0, "SBR Settings")
@@ -115,10 +115,22 @@ def main(stdscr):
             slot_input = input_window.getstr().decode()
             slotlist = list(map(int, slot_input.split(',')))
 
+    time.sleep(1)
     input_window.clear()
-    input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
-    input_window.addstr(2, 0, notify)
-    input_window.addstr(4, 0, "Press any key to start the test...")
+    line_pos = 0
+    if 'g' in operations:
+        input_window.addstr(line_pos, 0, notify)
+        line_pos += 2
+    if 'd' in operations:
+        input_window.addstr(line_pos, 0, "Run 629 Diag")
+        line_pos += 2
+    if 's' in operations:
+        input_window.addstr(line_pos, 0, f"Number of Loops: {inputnum_loops}")
+        input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
+        input_window.addstr(line_pos+4, 0, f"Slot numbers to test: {slotlist}")
+        line_pos += 6
+
+    input_window.addstr(11, 0, "Press any key to start the test...")
     input_window.refresh()
     input_window.getch()
 
