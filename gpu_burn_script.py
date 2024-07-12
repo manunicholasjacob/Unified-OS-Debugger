@@ -2,7 +2,7 @@ import subprocess
 from datetime import datetime
 import time
 import curses
-
+#
 # Function to Print to Output Window
 def output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = ""):
     pady, padx = window.getyx()
