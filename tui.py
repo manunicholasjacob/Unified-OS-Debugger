@@ -76,6 +76,9 @@ def main(stdscr):
 
     input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
     operations = input_window.getstr().decode().lower()
+    print(operations)
+    for operation in operations.split(','):
+        print(operation)
     operations = [operation.strip() for operation in operations.split(',')]
     while all(operation not in ['s','g','d'] for operation in operations):
         input_window.clear()
