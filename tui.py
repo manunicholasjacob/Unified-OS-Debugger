@@ -83,7 +83,7 @@ def main(stdscr):
         operations_input = input_window.getstr().decode().lower()
         operations = [operation.strip() for operation in operations_input.split(',')]
 
-    input_window.addstr(2, 0, "Enter your password (sudo access): ")
+    input_window.addstr(3, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
 
     for operation in operations:
@@ -130,15 +130,7 @@ def main(stdscr):
         input_window.addstr(line_pos+4, 0, f"Slot numbers to test: {slotlist}")
         line_pos += 6
 
-    input_window.addstr(11, 0, "Press any key to start the test...")
-    input_window.refresh()
-    input_window.getch()
-
-    input_window.clear()
-    input_window.addstr(0, 0, f"Password: {'*' * len(user_password)}")
-    input_window.addstr(2, 0, f"Number of Loops: {inputnum_loops}")
-    input_window.addstr(4, 0, f"Kill on error: {kill}")
-    input_window.addstr(6, 0, f"Slot numbers to test: {slotlist}")
+    time.sleep(1)
     input_window.addstr(10, 0, "Press any key to start the test...")
     input_window.refresh()
     input_window.getch()
