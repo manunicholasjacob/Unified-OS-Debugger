@@ -46,7 +46,7 @@ def main(stdscr):
     slot_window = curses.newwin(height, slot_window_width, 1, 1)
     display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
     for i, slot in enumerate(slot_numbers):
-        slot = slot.replace(" ", "").split(":")
+        slot = slot.split(" : ")
         slot_window.addstr(i + 2, 2, '{:<4s} {:<10s}'.format(slot[0], slot[1]))
     slot_window.refresh()
 
