@@ -122,6 +122,7 @@ def main(stdscr):
         input_window.getch()
 
     else:
+        return 0
 
 
     # Set error reporting to 0
