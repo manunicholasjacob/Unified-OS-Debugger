@@ -50,7 +50,7 @@ def main(stdscr):
     slot_window.refresh()
 
     gpu_window_height = height  
-    gpu_window_width = 70
+    gpu_window_width = 75
     gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, slot_window_width+3)
     display_box(gpu_window, 1, 41, gpu_window_height, gpu_window_width, "GPU Info")
     for i, gpu_info in enumerate(gpu_info_list):
@@ -59,8 +59,8 @@ def main(stdscr):
     gpu_window.refresh()
 
     output_window_height = 15
-    output_window_width = 50
-    output_window = curses.newpad(10000, 50)
+    output_window_width = 55
+    output_window = curses.newpad(10000, 55)
     output_window_border = curses.newwin(output_window_height, output_window_width, height + 2, 50+3)
     display_box(output_window_border, 10, 41, height, slot_window_width+3, "Output")
     pad_pos = 0
