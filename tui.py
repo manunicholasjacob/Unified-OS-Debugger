@@ -45,9 +45,10 @@ def main(stdscr):
     slot_window_width = 30
     slot_window = curses.newwin(height, slot_window_width, 1, 1)
     display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
+    slot_window.addstr(1, 2, 'Slot Number\tBDF')
     for i, slot in enumerate(slot_numbers):
         slot = slot.split(" : ")
-        slot_window.addstr(i + 2, 2, '{:<4s} {:<10s}'.format(slot[0], slot[1]))
+        slot_window.addstr(i + 2, 2, '{:<15s} {:<10s}'.format(slot[0], slot[1]))
     slot_window.refresh()
 
     gpu_window_height = height  
