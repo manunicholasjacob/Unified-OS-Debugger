@@ -125,10 +125,9 @@ def main(stdscr):
         input_window.addstr(line_pos, 0, "Run 629 Diag")
         line_pos += 2
     if 's' in operations:
-        input_window.addstr(line_pos, 0, f"Number of Loops: {inputnum_loops}")
+        input_window.addstr(line_pos, 0, f"Run SBR for {inputnum_loops} loops on slot numbers {slotlist}")
         input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
-        input_window.addstr(line_pos+4, 0, f"Slot numbers to test: {slotlist}")
-        line_pos += 6
+        line_pos += 4
 
     time.sleep(1)
     input_window.addstr(10, 0, "Press any key to start the test...")
