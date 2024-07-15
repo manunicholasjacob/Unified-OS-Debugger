@@ -51,6 +51,7 @@ def main(stdscr):
         slot_window.addstr(i + 2, 2, '{:<14s} {:<10s}'.format(slot[0], slot[1]))
     slot_window.refresh()
 
+    # Display GPU information 
     gpu_window_height = height  
     gpu_window_width = 75
     gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, slot_window_width+3)
@@ -60,6 +61,7 @@ def main(stdscr):
         gpu_window.addstr(i+2, 2, gpu_print.expandtabs(3))
     gpu_window.refresh()
 
+    # Create Output Window
     output_window_height = 15
     output_window_width = 55
     output_window = curses.newpad(10000, 55)
@@ -98,9 +100,11 @@ def main(stdscr):
                 input_window.addstr(4, 0, "Run gpu_burn for how long (in seconds)?: ")
                 gpu_run_time = input_window.getstr().decode()
                 input_window.addstr(6, 0, "Run GPUs at what Percent?: ")
-                gpu_gpu_percent = input_window.getstr().decode()
-                notify = f"Run gpu_burn for {gpu_run_time} seconds at {gpu_gpu_percent}%"
+                gpu_percent = input_window.getstr().decode()
+                notify = f"Run gpu_burn for {gpu_run_time} seconds at {gpu_percent}%"
             else:
+                gpu_run_time = 1800
+                gpu_percent = 95
                 notify = "Run gpu_burn for 1800 seconds at 95%"
 
         elif operation == 's':
@@ -119,13 +123,16 @@ def main(stdscr):
     input_window.clear()
     line_pos = 0
     if 'g' in operations:
-        input_window.addstr(line_pos, 0, notify)
+        gpu_pos = line_pos
+        input_window.addstr(line_pos, 0, "[ ]" + notify)
         line_pos += 2
     if 'd' in operations:
-        input_window.addstr(line_pos, 0, "Run 629 Diag")
+        diag_pos = line_pos
+        input_window.addstr(line_pos, 0, "[ ] Run 629 Diag")
         line_pos += 2
     if 's' in operations:
-        input_window.addstr(line_pos, 0, f"Run SBR for {inputnum_loops} loops on slot numbers {slotlist}")
+        sbr_pos = line_pos
+        input_window.addstr(line_pos, 0, f"[ ] Run SBR for {inputnum_loops} loops on slot numbers {slotlist}")
         input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
         line_pos += 4
 
@@ -133,6 +140,12 @@ def main(stdscr):
     input_window.addstr(10, 0, "Press any key to start the test...")
     input_window.refresh()
     input_window.getch()
+
+    # Execute Test in Order
+    if 'g' in operations:
+        pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
+        input_window.addstr(gpu_pos, 0, "[x]" + notify)
+        time.sleep(1.5)
 
     # Set error reporting to 0
     device_window_height = 15
