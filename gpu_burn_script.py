@@ -68,11 +68,11 @@ def check_replay(gpu_percentage, burn_time, gpu_number, gpu_index, call_time, wi
     # 'gpu_burn' has finished; you can perform any cleanup or final actions here
     # print("gpu_burn has completed.")
     pad_pos = output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "gpu_burn has completed.")
-
+    pad_pos = output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "Writing to gpu_burn_output.txt")
     bdf_read = execute_shell_command("nvidia-smi --query-gpu=pci.bus_id --format=csv,noheader")
     bdf_read = bdf_read.split('\n')
     bdf_read = [":".join(line.split(':')[1:]) for line in bdf_read]
-    with open("./output.txt","w") as file:
+    with open("./gpu_burn_output.txt","w") as file:
         if(len(gpu_index) > 0):
             bdfs = []
             for i, bdf in enumerate(bdf_read):
@@ -90,8 +90,9 @@ def check_replay(gpu_percentage, burn_time, gpu_number, gpu_index, call_time, wi
                 replay_count = replay_count.split("\n")
                 for line in replay_count: file.write(line.strip() + "\n")
                 file.write("\n")
+    pad_pos = output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "Writing to gpu_burn_log.txt")
     stdout, stderr = gpu_process.communicate()
-    with open("./gpu_burn_output.txt", "w") as file:
+    with open("./gpu_burn_log.txt", "w") as file:
         file.write(stdout.decode("utf-8"))
 
     return pad_pos
