@@ -4,6 +4,7 @@ import device_control
 from datetime import datetime
 import gpu_burn_script
 import time
+import run_629_diag
 
 def main(stdscr):
     curses.echo()
@@ -148,21 +149,25 @@ def main(stdscr):
         input_window.refresh()
         time.sleep(1.5)
 
-    # Set error reporting to 0
-    device_window_height = 15
-    device_window = curses.newwin(device_window_height, 60, height + 17, 1)
-    display_box(device_window, height + 17, 1, device_window_height, 60, "Device Control Status")
-    device_window.addstr(2, 2, "Setting error reporting to 0...")
-    device_window.refresh()
+    if 'd' in operations:
+        run_629_diag
+        
 
-    bdfs = device_control.get_all_bdfs()
-    device_control.store_original_values(bdfs)
-    device_control.process_bdfs(bdfs)
+    if 's' in operations:
+        # Set error reporting to 0
+        device_window_height = 15
+        device_window = curses.newwin(device_window_height, 60, height + 17, 1)
+        display_box(device_window, height + 17, 1, device_window_height, 60, "Device Control Status")
+        device_window.addstr(2, 2, "Setting error reporting to 0...")
+        device_window.refresh()
 
-    device_window.addstr(4, 2, "Error reporting set to 0.")
-    device_window.refresh()
+        bdfs = device_control.get_all_bdfs()
+        device_control.store_original_values(bdfs)
+        device_control.process_bdfs(bdfs)
 
-    if operation in ['s', 'b']:
+        device_window.addstr(4, 2, "Error reporting set to 0.")
+        device_window.refresh()
+
         # Run the sbr functionality
         device_window.addstr(5, 2, "Running SBR tests...")
         device_window.refresh()
