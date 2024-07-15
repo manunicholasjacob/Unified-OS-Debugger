@@ -167,7 +167,7 @@ def main(stdscr):
 
         # gpu_burn_process.join()
         done = False
-        t = threading.Thread(target=animate('g'))
+        t = threading.Thread(target=animate, args=('g'))
         t.start()
         time.sleep(10)
         done = True
