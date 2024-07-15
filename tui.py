@@ -5,6 +5,8 @@ from datetime import datetime
 import gpu_burn_script
 import time
 import run_629_diag
+import itertools
+import multiprocessing
 
 def main(stdscr):
     curses.echo()
@@ -36,6 +38,7 @@ def main(stdscr):
             elif cmd == curses.KEY_UP:
                 if scroll_pad > 0: scroll_pad -= 1
                 window.refresh(scroll_pad, 0, window_offset_y, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
+
 
     # Display available slot numbers
     slot_numbers = sbr.get_slot_numbers()
@@ -147,7 +150,10 @@ def main(stdscr):
         input_window.clrtoeol()
         input_window.addstr(10, 0, "Running gpu_burn...")
         input_window.refresh()
-        pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
+        gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
+        gpu_burn_process.start()
+        gpu_burn_process.join()
+        # pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
         input_window.addstr(gpu_pos, 0, "[x]\t".expandtabs(2) + notify)
         input_window.refresh()
         time.sleep(1.5)
