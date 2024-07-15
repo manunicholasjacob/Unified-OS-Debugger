@@ -2,7 +2,7 @@ import subprocess
 from datetime import datetime
 import time
 import curses
-#
+
 # Function to Print to Output Window
 def output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = ""):
     pady, padx = window.getyx()
@@ -72,7 +72,7 @@ def check_replay(gpu_percentage, burn_time, gpu_number, gpu_index, call_time, wi
     bdf_read = execute_shell_command("nvidia-smi --query-gpu=pci.bus_id --format=csv,noheader")
     bdf_read = bdf_read.split('\n')
     bdf_read = [":".join(line.split(':')[1:]) for line in bdf_read]
-    with open("/home/dell/Desktop/output.txt","w") as file:
+    with open("./output.txt","w") as file:
         if(len(gpu_index) > 0):
             bdfs = []
             for i, bdf in enumerate(bdf_read):
@@ -91,7 +91,7 @@ def check_replay(gpu_percentage, burn_time, gpu_number, gpu_index, call_time, wi
                 for line in replay_count: file.write(line.strip() + "\n")
                 file.write("\n")
     stdout, stderr = gpu_process.communicate()
-    with open("./gpu_burn_output", "w") as file:
+    with open("./gpu_burn_output.txt", "w") as file:
         file.write(stdout.decode("utf-8"))
 
     return pad_pos
