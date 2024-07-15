@@ -75,7 +75,7 @@ def main(stdscr):
     input_window_width = 50
     input_window = curses.newwin(input_window_height-4, input_window_width-4, height + 4, 3)
     input_window_border = curses.newwin(input_window_height, input_window_width, height + 2, 1)
-    display_box(input_window_border, height + 2, 1, input_window_height, input_window_width, "User Inputs")
+    display_box(input_window_border, height + 2, 1, input_window_height, input_window_width, "Command Line")
 
     input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
     operations_input = input_window.getstr().decode().lower()
@@ -125,17 +125,16 @@ def main(stdscr):
     line_pos = 0
     if 'g' in operations:
         gpu_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ]\t".expandtabs(3) + notify)
+        input_window.addstr(line_pos, 0, "[ ]\t".expandtabs(2) + notify)
         line_pos += 2
     if 'd' in operations:
         diag_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ]\tRun 629 Diag".expandtabs(3))
+        input_window.addstr(line_pos, 0, "[ ]\tRun 629 Diag".expandtabs(2))
         line_pos += 2
     if 's' in operations:
         sbr_pos = line_pos
-        input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(3))
-        input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
-        line_pos += 4
+        input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(2))
+        line_pos += 2
 
     time.sleep(1)
     input_window.addstr(10, 0, "Press any key to start the test...")
@@ -145,7 +144,7 @@ def main(stdscr):
     # Execute Test in Order
     if 'g' in operations:
         pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
-        input_window.addstr(gpu_pos, 0, "[x]\t" + notify)
+        input_window.addstr(gpu_pos, 0, "[x]\t".expandtabs(2) + notify)
         input_window.refresh()
         time.sleep(1.5)
 
