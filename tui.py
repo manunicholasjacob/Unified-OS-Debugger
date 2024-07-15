@@ -6,7 +6,7 @@ import gpu_burn_script
 import time
 import run_629_diag
 import itertools
-import multiprocessing
+import threading
 
 def main(stdscr):
     curses.echo()
@@ -144,16 +144,33 @@ def main(stdscr):
     input_window.refresh()
     input_window.getch()
 
+    done = False
+    def animate(operation):
+        for c in itertools.cycle(['|', '/', '-', '\\']):
+            if done: break
+            if operation == 'g':
+                input_window.addstr(gpu_pos, 0, f"[{c}]\t".expandtabs(2) + notify)
+            if operation == 'd':
+                input_window.addstr(gpu_pos, 0, f"[{c}]\tRun 629 Diag".expandtabs(2))
+            input_window.refresh()
+            time.sleep(0.1)
+
     # Execute Test in Order
     if 'g' in operations:
         input_window.move(10,0)
         input_window.clrtoeol()
         input_window.addstr(10, 0, "Running gpu_burn...")
         input_window.refresh()
-        gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
-        gpu_burn_process.start()
-        gpu_burn_process.join()
-        # pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
+        # gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
+        # gpu_burn_process.start()
+        # while gpu_burn_process.is_alive():
+
+        # gpu_burn_process.join()
+        done = False
+        t = threading.Thread(target=animate)
+        t.start()
+        pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
+        done = True
         input_window.addstr(gpu_pos, 0, "[x]\t".expandtabs(2) + notify)
         input_window.refresh()
         time.sleep(1.5)
