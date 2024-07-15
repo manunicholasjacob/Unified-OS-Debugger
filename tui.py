@@ -124,15 +124,15 @@ def main(stdscr):
     line_pos = 0
     if 'g' in operations:
         gpu_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ]\t" + notify)
+        input_window.addstr(line_pos, 0, "[ ]\t".expandtabs(3) + notify)
         line_pos += 2
     if 'd' in operations:
         diag_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ]\tRun 629 Diag")
+        input_window.addstr(line_pos, 0, "[ ]\tRun 629 Diag".expandtabs(3))
         line_pos += 2
     if 's' in operations:
         sbr_pos = line_pos
-        input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}")
+        input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(3))
         input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
         line_pos += 4
 
@@ -167,7 +167,7 @@ def main(stdscr):
         device_window.addstr(5, 2, "Running SBR tests...")
         device_window.refresh()
 
-        sbr.run_test(device_window, user_password, inputnum_loops, kill, slotlist)
+        sbr.run_test(device_window, user_password, inputnum_loops, kill, slotlist, pad_pos)
 
         device_window.addstr(7, 2, "SBR tests completed.")
         device_window.refresh()
