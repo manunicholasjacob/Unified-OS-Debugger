@@ -135,7 +135,7 @@ def main(stdscr):
         sbr_pos = line_pos
         input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(2))
         line_pos += 2
-
+    input_window.refresh()
     time.sleep(1)
     input_window.addstr(10, 0, "Press any key to start the test...")
     input_window.refresh()
@@ -143,16 +143,22 @@ def main(stdscr):
 
     # Execute Test in Order
     if 'g' in operations:
+        input_window.addstr(10, 0, "Running gpu_burn...")
+        input_window.refresh()
         pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
         input_window.addstr(gpu_pos, 0, "[x]\t".expandtabs(2) + notify)
         input_window.refresh()
         time.sleep(1.5)
 
     if 'd' in operations:
-        run_629_diag
-
+        input_window.addstr(10, 0, "Running 629_diag...")
+        input_window.refresh()
+        run_629_diag.main()
+        time.sleep(1.5)
 
     if 's' in operations:
+        input_window.addstr(10, 0, "Running SBR...")
+        input_window.refresh()
         # Set error reporting to 0
         device_window_height = 15
         device_window = curses.newwin(device_window_height, 60, height + 17, 1)
