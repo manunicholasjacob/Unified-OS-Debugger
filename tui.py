@@ -167,7 +167,7 @@ def main(stdscr):
 
         # gpu_burn_process.join()
         done = False
-        t = threading.Thread(target=animate)
+        t = threading.Thread(target=animate('g'))
         t.start()
         pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
         done = True
