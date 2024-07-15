@@ -151,7 +151,9 @@ def main(stdscr):
             if operation == 'g':
                 input_window.addstr(gpu_pos, 0, f"[{c}]\t".expandtabs(2) + notify)
             if operation == 'd':
-                input_window.addstr(gpu_pos, 0, f"[{c}]\tRun 629 Diag".expandtabs(2))
+                input_window.addstr(diag_pos, 0, f"[{c}]\tRun 629 Diag".expandtabs(2))
+            if operation == 's':
+                input_window.addstr(sbr_pos, 0, f"[{c}]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(2))
             input_window.refresh()
             time.sleep(0.1)
 
@@ -180,12 +182,16 @@ def main(stdscr):
         input_window.clrtoeol()
         input_window.addstr(10, 0, "Running 629_diag...")
         input_window.refresh()
+        done = False
+        t = threading.Thread(target=animate, args=('d'))
+        t.start()
         run_629_diag.main()
-        input_window.addstr(diag_pos, 0, "[x]\tRun 629 Diag".expandtabs(2))
-        input_window.refresh()
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "629_Diag Finished Running")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Output writen to ./629_diag_output.txt")
+        done = True
+        input_window.addstr(diag_pos, 0, "[x]\tRun 629 Diag".expandtabs(2))
+        input_window.refresh()
         time.sleep(1.5)
 
     if 's' in operations:
