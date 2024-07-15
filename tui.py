@@ -160,6 +160,9 @@ def main(stdscr):
         run_629_diag.main()
         input_window.addstr(diag_pos, 0, "[x]\tRun 629 Diag".expandtabs(2))
         input_window.refresh()
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "629_Diag Finished Running")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Output writen to ./629_diag_output.txt")
         time.sleep(1.5)
 
     if 's' in operations:
