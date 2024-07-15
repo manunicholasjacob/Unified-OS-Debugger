@@ -124,15 +124,15 @@ def main(stdscr):
     line_pos = 0
     if 'g' in operations:
         gpu_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ]" + notify)
+        input_window.addstr(line_pos, 0, "[ ]\t" + notify)
         line_pos += 2
     if 'd' in operations:
         diag_pos = line_pos
-        input_window.addstr(line_pos, 0, "[ ] Run 629 Diag")
+        input_window.addstr(line_pos, 0, "[ ]\tRun 629 Diag")
         line_pos += 2
     if 's' in operations:
         sbr_pos = line_pos
-        input_window.addstr(line_pos, 0, f"[ ] Run SBR for {inputnum_loops} loops on slot numbers {slotlist}")
+        input_window.addstr(line_pos, 0, f"[ ]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}")
         input_window.addstr(line_pos+2, 0, f"Kill on error: {kill}")
         line_pos += 4
 
@@ -144,7 +144,8 @@ def main(stdscr):
     # Execute Test in Order
     if 'g' in operations:
         pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
-        input_window.addstr(gpu_pos, 0, "[x]" + notify)
+        input_window.addstr(gpu_pos, 0, "[x]\t" + notify)
+        input_window.refresh()
         time.sleep(1.5)
 
     # Set error reporting to 0
