@@ -151,7 +151,7 @@ def main(stdscr):
 
     if 'd' in operations:
         run_629_diag
-        
+
 
     if 's' in operations:
         # Set error reporting to 0
@@ -172,7 +172,7 @@ def main(stdscr):
         device_window.addstr(5, 2, "Running SBR tests...")
         device_window.refresh()
 
-        sbr.run_test(device_window, user_password, inputnum_loops, kill, slotlist, pad_pos)
+        sbr.run_test(device_window, user_password, inputnum_loops, kill, slotlist)
 
         device_window.addstr(7, 2, "SBR tests completed.")
         device_window.refresh()
