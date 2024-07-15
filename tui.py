@@ -143,6 +143,8 @@ def main(stdscr):
 
     # Execute Test in Order
     if 'g' in operations:
+        input_window.move(10,0)
+        input_window.clrtoeol()
         input_window.addstr(10, 0, "Running gpu_burn...")
         input_window.refresh()
         pad_pos = gpu_burn_script.check_replay(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
@@ -151,12 +153,18 @@ def main(stdscr):
         time.sleep(1.5)
 
     if 'd' in operations:
+        input_window.move(10,0)
+        input_window.clrtoeol()
         input_window.addstr(10, 0, "Running 629_diag...")
         input_window.refresh()
         run_629_diag.main()
+        input_window.addstr(diag_pos, 0, "[x]\tRun 629 Diag".expandtabs(2))
+        input_window.refresh()
         time.sleep(1.5)
 
     if 's' in operations:
+        input_window.move(10,0)
+        input_window.clrtoeol()
         input_window.addstr(10, 0, "Running SBR...")
         input_window.refresh()
         # Set error reporting to 0
