@@ -66,7 +66,7 @@ def main(stdscr):
     gpu_window.refresh()
 
     summary_window_height = 20
-    summary_window_width = 105
+    summary_window_width = 107
     summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
     display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
