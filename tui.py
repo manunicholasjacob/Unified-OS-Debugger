@@ -244,9 +244,9 @@ def main(stdscr):
     # display_box(stdscr, 1, 1, 20, 60, "Test Summary")
     summary_window_height = 15
     summary_window_width = 100
-    input_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
-    input_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
-    display_box(input_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
+    summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
+    summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
+    display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
 
     try:
         with open("output.txt", "r") as file:
