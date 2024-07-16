@@ -325,6 +325,7 @@ def main(stdscr):
 
     quit = summary_window.getch()  # Wait for a key press to keep the interface open
     while quit != ord('q'):
-        quit = summary_window.getch()
+        quit = stdscr.getch()
+        stdscr.clear()
 
 curses.wrapper(main)
