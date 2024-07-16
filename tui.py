@@ -247,7 +247,6 @@ def main(stdscr):
     summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
     display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
-    time.sleep(15)
 
     try:
         with open("./output.txt", "r") as file:
@@ -263,23 +262,23 @@ def main(stdscr):
 
         # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
 
-        stdscr.addstr(2, 2, f"Start Time: {start_time}")
-        stdscr.addstr(3, 2, f"End Time: {end_time}")
+        summary_window.addstr(2, 2, f"Start Time: {start_time}")
+        summary_window.addstr(3, 2, f"End Time: {end_time}")
         # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
-        stdscr.addstr(5, 2, f"Tested BDFs: {tested_bdfs}")
-        stdscr.addstr(6, 2, f"Downstream BDFs: {downstream_bdfs}")
-        stdscr.addstr(7, 2, f"Slot Numbers: {slot_numbers}")
-        stdscr.addstr(8, 2, f"Slot Test Counts: {slot_test_counts}")
+        summary_window.addstr(5, 2, f"Tested BDFs: {tested_bdfs}")
+        summary_window.addstr(6, 2, f"Downstream BDFs: {downstream_bdfs}")
+        summary_window.addstr(7, 2, f"Slot Numbers: {slot_numbers}")
+        summary_window.addstr(8, 2, f"Slot Test Counts: {slot_test_counts}")
         if errors:
-            stdscr.addstr(9, 2, f"Errors: {len(errors)}")
+            summary_window.addstr(9, 2, f"Errors: {len(errors)}")
             for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
-                stdscr.addstr(i, 2, error.strip())
+                summary_window.addstr(i, 2, error.strip())
         else:
-            stdscr.addstr(9, 2, "No errors detected.")
+            summary_window.addstr(9, 2, "No errors detected.")
     except Exception as e:
-        stdscr.addstr(2, 2, f"Error reading summary: {str(e)}")
+        summary_window.addstr(2, 2, f"Error reading summary: {str(e)}")
 
-    stdscr.refresh()
-    stdscr.getch()  # Wait for a key press to keep the interface open
+    summary_window.refresh()
+    summary_window.getch()  # Wait for a key press to keep the interface open
 
 curses.wrapper(main)
