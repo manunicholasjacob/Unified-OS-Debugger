@@ -244,49 +244,87 @@ def main(stdscr):
     # display_box(stdscr, 1, 1, 20, 60, "Test Summary")
     input_window.addstr(10, 0, "Generating Summary Window...")
     input_window.refresh()
-    time.sleep(2)
+    time.sleep(0.5)
     summary_window_height = 20
     summary_window_width = 107
     summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
-    display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
+    display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary - Press q to Quit")
+    summary_line_pos = 0
 
-    try:
-        with open("./output.txt", "r") as file:
-            lines = file.readlines()
-
-        start_time = next(line for line in lines if line.startswith("Start Time:")).split(": ", 1)[1].strip()
-        end_time = next(line for line in lines if line.startswith("End Time:")).split(": ", 1)[1].strip()
-        tested_bdfs = next(line for line in lines if line.startswith("Tested BDFs:")).split(": ", 1)[1].strip()
-        downstream_bdfs = next(line for line in lines if line.startswith("Downstream BDFs:")).split(": ", 1)[1].strip()
-        slot_numbers = next(line for line in lines if line.startswith("Slot Numbers:")).split(": ", 1)[1].strip()
-        slot_test_counts = next(line for line in lines if line.startswith("Slot Test Counts:")).split(": ", 1)[1].strip()
-        errors = [line for line in lines if "Error" in line]
-
-        # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
-
-        summary_window.addstr(2, 0, f"Start Time: {start_time}")
-        summary_window.addstr(3, 0, f"End Time: {end_time}")
-        # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
-        summary_window.addstr(5, 0, f"Tested BDFs: {tested_bdfs}")
-        summary_window.addstr(6, 0, f"Downstream BDFs: {downstream_bdfs}")
-        summary_window.addstr(7, 0, f"Slot Numbers: {slot_numbers}")
-        summary_window.addstr(8, 0, f"Slot Test Counts: {slot_test_counts}")
-        if errors:
-            summary_window.addstr(9, 0, f"Errors: {len(errors)}")
-            for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
-                summary_window.addstr(i, 2, error.strip())
+    if 'g' in operations:
+        summary_window.addstr(summary_line_pos, 0, "GPU_BURN SUMMARY")
+        summary_line_pos += 1
+        with open("./gpu_burn_output.txt", "r") as gpu_burn_output:
+            lines = gpu_burn_output.readlines()
+        lines_to_summary = []
+        for i, line in enumerate(lines):
+            if 'GPU' in line:
+                replays = int(lines[i+1].split(":")[-1].strip())
+                rollovers = int(lines[i+2].split(":")[-1].strip())
+                if replays > 0 or rollovers > 0:
+                    lines_to_summary.append(line + f"{replays} replays and {rollovers} rollovers")
+        if len(lines_to_summary) == 0:
+            summary_window.addstr(summary_line_pos, 0, "PASS: No Replays Detected")
+            summary_line_pos += 1
         else:
-            summary_window.addstr(9, 0, "No errors detected.")
-    except Exception as e:
-        summary_window.addstr(2, 0, f"Error reading summary: {str(e)}")
-    summary_window.refresh()
+            for line in lines_to_summary:
+                summary_window.addstr(summary_line_pos, 0, line)
+                summary_line_pos += 1
+        summary_line_pos += 1
+        summary_window.refresh()
 
-    input_window.addstr(10, 0, "Press q to Quit")
-    input_window.refresh()
+    if 'd' in operations:
+        summary_window.addstr(summary_line_pos, 0, "629_Diag SUMMARY")
+        summary_line_pos += 1
+        with open("./629_diag_output.txt", "r") as diag_output:
+            lines = diag_output.readlines()
+        test_complete = False
+        for line in lines:
+            if test_complete:
+                summary_window.addstr(summary_line_pos, 0, line)
+                summary_line_pos += 1
+            if "Fieldiag Testing Completed" in line: test_complete = True
+        if not test_complete:
+            summary_window.addstr(summary_line_pos, 0, "Fieldiag Testing Failed - Check 629_diag_output.txt for more info")
+            summary_line_pos += 1
+        summary_line_pos += 1
+        summary_window.refresh()
 
-    quit = summary_window.getch()  # Wait for a key press to keep the interface open
-    while quit != ord('q'):
-        quit = summary_window.getch()
+    if 's' in operations:
+        try:
+            with open("./output.txt", "r") as file:
+                lines = file.readlines()
+
+            start_time = next(line for line in lines if line.startswith("Start Time:")).split(": ", 1)[1].strip()
+            end_time = next(line for line in lines if line.startswith("End Time:")).split(": ", 1)[1].strip()
+            tested_bdfs = next(line for line in lines if line.startswith("Tested BDFs:")).split(": ", 1)[1].strip()
+            downstream_bdfs = next(line for line in lines if line.startswith("Downstream BDFs:")).split(": ", 1)[1].strip()
+            slot_numbers = next(line for line in lines if line.startswith("Slot Numbers:")).split(": ", 1)[1].strip()
+            slot_test_counts = next(line for line in lines if line.startswith("Slot Test Counts:")).split(": ", 1)[1].strip()
+            errors = [line for line in lines if "Error" in line]
+
+            # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
+
+            summary_window.addstr(2, 0, f"Start Time: {start_time}")
+            summary_window.addstr(3, 0, f"End Time: {end_time}")
+            # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
+            summary_window.addstr(5, 0, f"Tested BDFs: {tested_bdfs}")
+            summary_window.addstr(6, 0, f"Downstream BDFs: {downstream_bdfs}")
+            summary_window.addstr(7, 0, f"Slot Numbers: {slot_numbers}")
+            summary_window.addstr(8, 0, f"Slot Test Counts: {slot_test_counts}")
+            if errors:
+                summary_window.addstr(9, 0, f"Errors: {len(errors)}")
+                for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
+                    summary_window.addstr(i, 2, error.strip())
+            else:
+                summary_window.addstr(9, 0, "No errors detected.")
+        except Exception as e:
+            summary_window.addstr(2, 0, f"Error reading summary: {str(e)}")
+        summary_window.refresh()
+
+        quit = summary_window.getch()  # Wait for a key press to keep the interface open
+        while quit != ord('q'):
+            quit = summary_window.getch()
 
 curses.wrapper(main)
