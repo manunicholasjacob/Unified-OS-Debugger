@@ -144,6 +144,7 @@ def main(stdscr):
     input_window.refresh()
     input_window.getch()
 
+    # Loading Circle
     done = False
     def animate(operation):
         for c in itertools.cycle(['|', '/', '-', '\\']):
@@ -181,12 +182,13 @@ def main(stdscr):
         input_window.move(10,0)
         input_window.clrtoeol()
         input_window.addstr(10, 0, "Running 629_diag...")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
         input_window.refresh()
         done = False
         t = threading.Thread(target=animate, args=('d'))
         t.start()
         run_629_diag.main()
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "629_Diag Finished Running")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Output writen to ./629_diag_output.txt")
         done = True
@@ -199,12 +201,17 @@ def main(stdscr):
         input_window.clrtoeol()
         input_window.addstr(10, 0, "Running SBR...")
         input_window.refresh()
+        done = False
+        t = threading.Thread(target=animate, args=('s'))
+        t.start()
+
         # Set error reporting to 0
         device_window_height = 15
         device_window = curses.newwin(device_window_height, 60, height + 17, 1)
         display_box(device_window, height + 17, 1, device_window_height, 60, "Device Control Status")
         device_window.addstr(2, 2, "Setting error reporting to 0...")
         device_window.refresh()
+
 
         bdfs = device_control.get_all_bdfs()
         device_control.store_original_values(bdfs)
@@ -221,29 +228,25 @@ def main(stdscr):
 
         device_window.addstr(7, 2, "SBR tests completed.")
         device_window.refresh()
+        done = True
 
-    if operation in ['g', 'b']:
-        # Run the GPU burn functionality
-        for i in range(20):  # Example loop, replace with actual GPU burn logic
-            pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, f"Output line {i}")
-            time.sleep(0.2)
+        # Reset device control registers to original values
+        device_window.addstr(8, 2, "Resetting device control registers...")
+        device_window.refresh()
 
-        pad_pos = gpu_burn_script.check_replay(95, 10, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
+        device_control.reset_to_original_values()
 
-        scroll_output(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos)
-
-    # Reset device control registers to original values
-    device_window.addstr(8, 2, "Resetting device control registers...")
-    device_window.refresh()
-
-    device_control.reset_to_original_values()
-
-    device_window.addstr(10, 2, "Device control registers reset to original values.")
-    device_window.refresh()
+        device_window.addstr(10, 2, "Device control registers reset to original values.")
+        device_window.refresh()
 
     # Display summary screen
-    stdscr.clear()
-    display_box(stdscr, 1, 1, 20, 60, "Test Summary")
+    # stdscr.clear()
+    # display_box(stdscr, 1, 1, 20, 60, "Test Summary")
+    summary_window_height = 15
+    summary_window_width = 100
+    input_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
+    input_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
+    display_box(input_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
 
     try:
         with open("output.txt", "r") as file:
