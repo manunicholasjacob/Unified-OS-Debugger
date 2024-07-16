@@ -261,11 +261,11 @@ def main(stdscr):
         slot_test_counts = next(line for line in lines if line.startswith("Slot Test Counts:")).split(": ", 1)[1].strip()
         errors = [line for line in lines if "Error" in line]
 
-        total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
+        # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
 
         stdscr.addstr(2, 2, f"Start Time: {start_time}")
         stdscr.addstr(3, 2, f"End Time: {end_time}")
-        stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
+        # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
         stdscr.addstr(5, 2, f"Tested BDFs: {tested_bdfs}")
         stdscr.addstr(6, 2, f"Downstream BDFs: {downstream_bdfs}")
         stdscr.addstr(7, 2, f"Slot Numbers: {slot_numbers}")
