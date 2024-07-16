@@ -160,7 +160,7 @@ def main(stdscr):
 
     # Execute Test in Order
     if 'g' in operations:
-        input_window.move(10,0)
+        input_window.move(15,0)
         input_window.clrtoeol()
         input_window.addstr(15, 0, "Running gpu_burn...")
         input_window.refresh()
@@ -179,7 +179,7 @@ def main(stdscr):
         time.sleep(1.5)
 
     if 'd' in operations:
-        input_window.move(10,0)
+        input_window.move(15,0)
         input_window.clrtoeol()
         input_window.addstr(15, 0, "Running 629_diag...")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
@@ -197,7 +197,7 @@ def main(stdscr):
         time.sleep(1.5)
 
     if 's' in operations:
-        input_window.move(10,0)
+        input_window.move(15,0)
         input_window.clrtoeol()
         input_window.addstr(15, 0, "Running SBR...")
         input_window.refresh()
@@ -319,7 +319,6 @@ def main(stdscr):
                 summary_window.addstr(summary_line_pos, 0, input[print_width*rollover_number:])
                 summary_line_pos += 1
                 return summary_line_pos
-                
 
             # summary_window.addstr(2, 0, f"Start Time: {start_time}")
             # summary_window.addstr(3, 0, f"End Time: {end_time}")
