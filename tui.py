@@ -248,6 +248,8 @@ def main(stdscr):
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
     display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
 
+    time.sleep(10)
+
     try:
         with open("output.txt", "r") as file:
             lines = file.readlines()
