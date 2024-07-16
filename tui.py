@@ -65,6 +65,13 @@ def main(stdscr):
         gpu_window.addstr(i+2, 2, gpu_print.expandtabs(3))
     gpu_window.refresh()
 
+    summary_window_height = 20
+    summary_window_width = 110
+    summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
+    summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
+    display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
+    time.sleep(15)
+
     # Create Output Window
     output_window_height = 15
     output_window_width = 55
@@ -242,8 +249,8 @@ def main(stdscr):
     # Display summary screen
     # stdscr.clear()
     # display_box(stdscr, 1, 1, 20, 60, "Test Summary")
-    summary_window_height = 15
-    summary_window_width = 100
+    summary_window_height = 20
+    summary_window_width = 110
     summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, height + 4, 3)
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, height + 2, 1)
     display_box(summary_window_border, height + 2, 1, summary_window_height, summary_window_width, "Test Summary")
