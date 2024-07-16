@@ -9,7 +9,7 @@ def output_print(window, window_offset_y, window_offset_x, window_height, window
     window.addstr(pady+1, 0, input)
     if pady+1 > window_height-4:  
         pad_pos += int(len(input)/window_width) + 1
-    window.refresh(pad_pos, 0, window_offset_y, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 2), min(curses.COLS-1, window_offset_x + window_width - 5))
+    window.refresh(pad_pos, 0, window_offset_y, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
     return pad_pos
 
 def execute_shell_command(command):
