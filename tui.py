@@ -310,7 +310,7 @@ def main(stdscr):
             summary_window.addstr(summary_line_pos, 0, "SBR SUMMARY")
             summary_line_pos += 1
 
-            def print_with_rollover(input):
+            def print_with_rollover(input, summary_line_pos):
                 print_width = summary_window_width - 4
                 rollover_number = int(len(input)/print_width)
                 for i in range(rollover_number):
@@ -318,6 +318,7 @@ def main(stdscr):
                     summary_line_pos += 1
                 summary_window.addstr(summary_line_pos, 0, line[print_width*rollover_number:])
                 summary_line_pos += 1
+                return summary_line_pos
                 
 
             # summary_window.addstr(2, 0, f"Start Time: {start_time}")
@@ -336,10 +337,10 @@ def main(stdscr):
             # summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
             # summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
 
-            print_with_rollover(f"Tested BDFs: {tested_bdfs}")
-            print_with_rollover(f"Downstream BDFs: {downstream_bdfs}")
-            print_with_rollover(f"Slot Numbers: {slot_numbers}")
-            print_with_rollover(f"Slot Test Counts: {slot_test_counts}")
+            summary_line_pos = print_with_rollover(f"Tested BDFs: {tested_bdfs}")
+            summary_line_pos = print_with_rollover(f"Downstream BDFs: {downstream_bdfs}")
+            summary_line_pos = print_with_rollover(f"Slot Numbers: {slot_numbers}")
+            summary_line_pos = print_with_rollover(f"Slot Test Counts: {slot_test_counts}")
 
 
             if errors:
