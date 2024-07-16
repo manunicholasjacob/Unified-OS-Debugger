@@ -309,17 +309,39 @@ def main(stdscr):
             # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
             summary_window.addstr(summary_line_pos, 0, "SBR SUMMARY")
             summary_line_pos += 1
+
+            def print_with_rollover(input):
+                print_width = summary_window_width - 4
+                rollover_number = int(len(input)/print_width)
+                for i in range(rollover_number):
+                    summary_window.addstr(summary_line_pos, 0, line[print_width*i:print_width*(i+1)])
+                    summary_line_pos += 1
+                summary_window.addstr(summary_line_pos, 0, line[print_width*rollover_number:])
+                summary_line_pos += 1
+                
+
             # summary_window.addstr(2, 0, f"Start Time: {start_time}")
             # summary_window.addstr(3, 0, f"End Time: {end_time}")
             # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
-            summary_window.addstr(summary_line_pos, 0, f"Tested BDFs: {tested_bdfs}")
-            summary_line_pos += int(len(f"Tested BDFs: {tested_bdfs}")/summary_window_width)
-            summary_window.addstr(summary_line_pos, 0, f"Downstream BDFs: {downstream_bdfs}")
-            summary_line_pos += int(len(f"Downstream BDFs: {downstream_bdfs}")/summary_window_width)
-            summary_window.addstr(summary_line_pos, 0, f"Slot Numbers: {slot_numbers}")
-            summary_line_pos += int(len(f"Slot Numbers: {slot_numbers}")/summary_window_width)
-            summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
-            summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
+            # line = f"Tested BDFs: {tested_bdfs}"
+            # if len(line) > (summary_window_width - 4): 
+            #     summary_window.addstr(summary_line_pos, 0, line[:summary_window_width - 4])
+            #     summary_window.addstr(summary_line_pos+1, 0, line[:summary_window_width - 4])
+            # summary_window.addstr(summary_line_pos, 0, f"Tested BDFs: {tested_bdfs}")
+            # summary_line_pos += int(len(f"Tested BDFs: {tested_bdfs}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Downstream BDFs: {downstream_bdfs}")
+            # summary_line_pos += int(len(f"Downstream BDFs: {downstream_bdfs}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Slot Numbers: {slot_numbers}")
+            # summary_line_pos += int(len(f"Slot Numbers: {slot_numbers}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
+            # summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
+
+            print_with_rollover(f"Tested BDFs: {tested_bdfs}")
+            print_with_rollover(f"Downstream BDFs: {downstream_bdfs}")
+            print_with_rollover(f"Slot Numbers: {slot_numbers}")
+            print_with_rollover(f"Slot Test Counts: {slot_test_counts}")
+
+
             if errors:
                 summary_window.addstr(summary_line_pos, 0, f"Errors: {len(errors)}")
                 for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
