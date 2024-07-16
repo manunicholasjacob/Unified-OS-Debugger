@@ -66,7 +66,7 @@ def main(stdscr):
     gpu_window.refresh()
 
     # Create Output Window
-    output_window_height = 15
+    output_window_height = 20
     output_window_width = 55
     output_window = curses.newpad(10000, 55)
     output_window_border = curses.newwin(output_window_height, output_window_width, height + 2, 50+3)
@@ -74,7 +74,7 @@ def main(stdscr):
     pad_pos = 0
 
     # Collect user inputs
-    input_window_height = 15
+    input_window_height = 20
     input_window_width = 50
     input_window = curses.newwin(input_window_height-4, input_window_width-4, height + 4, 3)
     input_window_border = curses.newwin(input_window_height, input_window_width, height + 2, 1)
@@ -140,7 +140,7 @@ def main(stdscr):
         line_pos += 2
     input_window.refresh()
     time.sleep(1)
-    input_window.addstr(10, 0, "Press any key to start the test...")
+    input_window.addstr(15, 0, "Press any key to start the test...")
     input_window.refresh()
     input_window.getch()
 
@@ -162,7 +162,7 @@ def main(stdscr):
     if 'g' in operations:
         input_window.move(10,0)
         input_window.clrtoeol()
-        input_window.addstr(10, 0, "Running gpu_burn...")
+        input_window.addstr(15, 0, "Running gpu_burn...")
         input_window.refresh()
         # gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
         # gpu_burn_process.start()
@@ -181,7 +181,7 @@ def main(stdscr):
     if 'd' in operations:
         input_window.move(10,0)
         input_window.clrtoeol()
-        input_window.addstr(10, 0, "Running 629_diag...")
+        input_window.addstr(15, 0, "Running 629_diag...")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
         input_window.refresh()
@@ -199,7 +199,7 @@ def main(stdscr):
     if 's' in operations:
         input_window.move(10,0)
         input_window.clrtoeol()
-        input_window.addstr(10, 0, "Running SBR...")
+        input_window.addstr(15, 0, "Running SBR...")
         input_window.refresh()
         done = False
         t = threading.Thread(target=animate, args=('s'))
@@ -242,7 +242,7 @@ def main(stdscr):
     # Display summary screen
     # stdscr.clear()
     # display_box(stdscr, 1, 1, 20, 60, "Test Summary")
-    input_window.addstr(10, 0, "Generating Summary Window...")
+    input_window.addstr(15, 0, "Generating Summary Window...")
     input_window.refresh()
     time.sleep(0.5)
     summary_window_height = 20
@@ -275,7 +275,7 @@ def main(stdscr):
         summary_window.refresh()
 
     if 'd' in operations:
-        summary_window.addstr(summary_line_pos, 0, "629_Diag SUMMARY")
+        summary_window.addstr(summary_line_pos, 0, "629_DIAG SUMMARY")
         summary_line_pos += 1
         with open("./629_diag_output.txt", "r") as diag_output:
             lines = diag_output.readlines()
