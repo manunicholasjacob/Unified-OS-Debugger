@@ -337,10 +337,10 @@ def main(stdscr):
             # summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
             # summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
 
-            summary_line_pos = print_with_rollover(f"Tested BDFs: {tested_bdfs}")
-            summary_line_pos = print_with_rollover(f"Downstream BDFs: {downstream_bdfs}")
-            summary_line_pos = print_with_rollover(f"Slot Numbers: {slot_numbers}")
-            summary_line_pos = print_with_rollover(f"Slot Test Counts: {slot_test_counts}")
+            summary_line_pos = print_with_rollover(f"Tested BDFs: {tested_bdfs}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Downstream BDFs: {downstream_bdfs}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Slot Numbers: {slot_numbers}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Slot Test Counts: {slot_test_counts}", summary_line_pos)
 
 
             if errors:
