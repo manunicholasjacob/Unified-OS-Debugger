@@ -323,7 +323,7 @@ def main(stdscr):
                 for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
                     summary_window.addstr(summary_line_pos+i, 2, error.strip())
             else:
-                summary_window.addstr(summary_line_pos 0, "No errors detected.")
+                summary_window.addstr(summary_line_pos, 0, "No errors detected.")
         except Exception as e:
             summary_window.addstr(summary_line_pos, 0, f"Error reading summary: {str(e)}")
         summary_window.refresh()
