@@ -323,8 +323,8 @@ def main(stdscr):
             summary_window.addstr(2, 0, f"Error reading summary: {str(e)}")
         summary_window.refresh()
 
-        quit = summary_window.getch()  # Wait for a key press to keep the interface open
-        while quit != ord('q'):
-            quit = summary_window.getch()
+    quit = summary_window.getch()  # Wait for a key press to keep the interface open
+    while quit != ord('q'):
+        quit = summary_window.getch()
 
 curses.wrapper(main)
