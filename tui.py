@@ -314,9 +314,9 @@ def main(stdscr):
                 print_width = summary_window_width - 4
                 rollover_number = int(len(input)/print_width)
                 for i in range(rollover_number):
-                    summary_window.addstr(summary_line_pos, 0, line[print_width*i:print_width*(i+1)])
+                    summary_window.addstr(summary_line_pos, 0, input[print_width*i:print_width*(i+1)])
                     summary_line_pos += 1
-                summary_window.addstr(summary_line_pos, 0, line[print_width*rollover_number:])
+                summary_window.addstr(summary_line_pos, 0, input[print_width*rollover_number:])
                 summary_line_pos += 1
                 return summary_line_pos
                 
