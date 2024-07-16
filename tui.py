@@ -97,7 +97,7 @@ def main(stdscr):
         input_window.clear()
         if operation == 'g':
             input_window.addstr(0, 0, "GPU_Burn Settings")
-            input_window.addstr(2, 0, "Run with Default Settings? (30 minutes at 95%) [y/n]: ")
+            input_window.addstr(2, 0, "Run for 30 minutes at 95% (y/n): ")
             gpu_changesetting = input_window.getstr().decode()
 
             if gpu_changesetting == 'n':
