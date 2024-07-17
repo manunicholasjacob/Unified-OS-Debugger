@@ -162,6 +162,7 @@ def main(stdscr):
     if 'g' in operations:
         input_window.move(15,0)
         input_window.clrtoeol()
+        input_window.refresh()
         input_window.addstr(15, 0, "Running gpu_burn...")
         input_window.refresh()
         # gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
@@ -180,9 +181,10 @@ def main(stdscr):
 
     if 'd' in operations:
         input_window.move(15,0)
-        curses.wclrtoeol(input_window)
+        input_window.clrtoeol()
+        input_window.refresh()
         input_window.addstr(15, 0, "Running 629_diag...")
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
         input_window.refresh()
         done = False
@@ -199,6 +201,7 @@ def main(stdscr):
     if 's' in operations:
         input_window.move(15,0)
         input_window.clrtoeol()
+        input_window.refresh()
         input_window.addstr(15, 0, "Running SBR...")
         input_window.refresh()
         done = False
