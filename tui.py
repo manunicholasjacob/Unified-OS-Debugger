@@ -180,7 +180,7 @@ def main(stdscr):
 
     if 'd' in operations:
         input_window.move(15,0)
-        input_window.clrtoeol()
+        curses.wclrtoeol(input_window)
         input_window.addstr(15, 0, "Running 629_diag...")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
