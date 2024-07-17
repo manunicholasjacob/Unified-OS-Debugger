@@ -83,7 +83,10 @@ def main(stdscr):
     input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
     operations_input = input_window.getstr().decode().lower()
     operations = [operation.strip() for operation in operations_input.split(',')]
-    while not all(operation in ['s','g','d'] for operation in operations):
+    all_valid = True
+    for operation in operations:
+        if operation not in ['s','g','d']: all_valid = False 
+    while not all_valid:
         input_window.clear()
         input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
         operations_input = input_window.getstr().decode().lower()
