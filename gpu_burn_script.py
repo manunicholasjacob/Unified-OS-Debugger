@@ -9,7 +9,7 @@ def output_print(window, window_offset_y, window_offset_x, window_height, window
     window.addstr(pady+1, 0, input)
     if pady+1 > window_height-4:  
         pad_pos += int(len(input)/window_width) + 1
-    window.refresh(pad_pos, 0, window_offset_y, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
+    window.refresh(pad_pos, 0, window_offset_y+1, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
     return pad_pos
 
 def execute_shell_command(command):
@@ -204,7 +204,8 @@ def gpu_traverse_up():
             physical_slot_numbers.append(-1)
     # gpu_streams = {gpuBDF : [physical_slot_numbers[i], root_ports[i]] for i, gpuBDF in enumerate(gpu_bdf_list)}
     psb_number = [1, 1, 2, 2, 4, 4, 3, 3] if len(gpu_bdf_list) > 4 else [1, 2, 4, 3]
-    gpu_streams = [[gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[i]] for i, gpuBDF in enumerate(gpu_bdf_list)]
+    connector = ["R1", "SL13, SL14", "SL3, SL4", "SL7, SL8", "SL11, SL12", "R4", "SL1, SL2", "SL5, SL6"] if len(gpu_bdf_list) > 4 else ["R1", "SL7, SL8", "SL11, SL12", "SL5, SL6"]
+    gpu_streams = [[gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[i], connector[i]] for i, gpuBDF in enumerate(gpu_bdf_list)]
     return gpu_streams
 
 def main():
