@@ -63,9 +63,8 @@ def main(stdscr):
     gpu_window.addstr(3, 2, "----------------------------------------------------")
     for i, gpu_info in enumerate(gpu_info_list):
         # gpu_print = f"GPU {i}\t|\tBDF: {gpu_info[0]}\t|\tSlot: {gpu_info[1]}\t|\tRoot Port: {gpu_info[2]}\t|\tPSB {gpu_info[3]}"
-        gpu_print = f"  {i}  | {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}  |  {gpu_info[3]}  | {gpu_info[4]}"
-        f"{text:^80}"
-        gpu_print = f"{i:^5}| {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}  |  {gpu_info[3]}  | {gpu_info[4]}"
+        # gpu_print = f"  {i}  | {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}  |  {gpu_info[3]}  | {gpu_info[4]}"
+        gpu_print = f"{i:^5}|{gpu_info[0]:^9}|{gpu_info[2]:^11}|{gpu_info[1]:^6}|{gpu_info[3]:^5}| {gpu_info[4]}"
         gpu_window.addstr(i+4, 2, gpu_print.expandtabs(3))
     gpu_window.refresh()
 
