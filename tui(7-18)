@@ -43,7 +43,7 @@ def main(stdscr):
     slot_numbers = sbr.get_slot_numbers()
     gpu_info_list = gpu_burn_script.gpu_traverse_up()
 
-    height = max(len(slot_numbers) + 4, len(gpu_info_list) + 4, 10)
+    height = max(len(slot_numbers) + 4, len(gpu_info_list) + 5, 10)
 
     slot_window_width = 30
     slot_window = curses.newwin(height, slot_window_width, 1, 1)
@@ -59,12 +59,12 @@ def main(stdscr):
     gpu_window_width = 75
     gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, slot_window_width+3)
     display_box(gpu_window, 1, 41, gpu_window_height, gpu_window_width, "GPU Info")
-    gpu_window.addstr(1, 2, "GPU |   BDF   | Root Port | Slot | PSB ")
-    gpu_window.addstr(2, 2, "---------------------------------------")
+    gpu_window.addstr(2, 2, " GPU |   BDF   | Root Port | Slot | PSB | Connector ")
+    gpu_window.addstr(3, 2, "----------------------------------------------------")
     for i, gpu_info in enumerate(gpu_info_list):
         # gpu_print = f"GPU {i}\t|\tBDF: {gpu_info[0]}\t|\tSlot: {gpu_info[1]}\t|\tRoot Port: {gpu_info[2]}\t|\tPSB {gpu_info[3]}"
-        gpu_print = f" {i}  | {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}  |  {gpu_info[3]}"
-        gpu_window.addstr(i+3, 2, gpu_print.expandtabs(3))
+        gpu_print = f"  {i}  | {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}  |  {gpu_info[3]}"
+        gpu_window.addstr(i+4, 2, gpu_print.expandtabs(3))
     gpu_window.refresh()
 
     # Create Output Window
