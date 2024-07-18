@@ -59,8 +59,10 @@ def main(stdscr):
     gpu_window_width = 75
     gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, slot_window_width+3)
     display_box(gpu_window, 1, 41, gpu_window_height, gpu_window_width, "GPU Info")
+    gpu_window.addstr(1, 2, "GPU |   BDF   | Root Port | Slot | PSB ")
     for i, gpu_info in enumerate(gpu_info_list):
-        gpu_print = f"GPU {i}\t|\tBDF: {gpu_info[0]}\t|\tSlot: {gpu_info[1]}\t|\tRoot Port: {gpu_info[2]}\t|\tPSB {gpu_info[3]}"
+        # gpu_print = f"GPU {i}\t|\tBDF: {gpu_info[0]}\t|\tSlot: {gpu_info[1]}\t|\tRoot Port: {gpu_info[2]}\t|\tPSB {gpu_info[3]}"
+        gpu_print = f" {i} | {gpu_info[0]} |  {gpu_info[2]}  |  {gpu_info[1]}   |  {gpu_info[3]}"
         gpu_window.addstr(i+2, 2, gpu_print.expandtabs(3))
     gpu_window.refresh()
 
