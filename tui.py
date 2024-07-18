@@ -83,9 +83,10 @@ def main(stdscr):
     input_window.addstr(0, 0, "Choose operation (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
     operations_input = input_window.getstr().decode().lower()
     operations = [operation.strip() for operation in operations_input.split(',')]
+
     all_valid = True
     for operation in operations:
-        if operation not in ['s','g','d']: all_valid = False 
+        if operation not in ['s','g','d']: all_valid = False
     while not all_valid:
         input_window.clear()
         input_window.addstr(0, 0, "Invalid Input - (s: SBR, g: GPU Burn, d: 629 Diag | comma seperated): ")
@@ -94,6 +95,8 @@ def main(stdscr):
         all_valid = True
         for operation in operations:
             if operation not in ['s','g','d']: all_valid = False
+
+
 
     input_window.addstr(3, 0, "Enter your password (sudo access): ")
     user_password = input_window.getstr().decode()
@@ -168,7 +171,6 @@ def main(stdscr):
     if 'g' in operations:
         input_window.move(15,0)
         input_window.clrtoeol()
-        input_window.refresh()
         input_window.addstr(15, 0, "Running gpu_burn...")
         input_window.refresh()
         # gpu_burn_process = multiprocessing.Process(target=gpu_burn_script.check_replay, args=(gpu_percent, gpu_run_time, 4, [], 10, output_window, height + 3, 55, output_window_height, output_window_width, pad_pos))
@@ -188,9 +190,8 @@ def main(stdscr):
     if 'd' in operations:
         input_window.move(15,0)
         input_window.clrtoeol()
-        input_window.refresh()
         input_window.addstr(15, 0, "Running 629_diag...")
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
+        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "\n\n\n\n\n\n\n\n\n\n")
         pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
         input_window.refresh()
         done = False
@@ -207,7 +208,6 @@ def main(stdscr):
     if 's' in operations:
         input_window.move(15,0)
         input_window.clrtoeol()
-        input_window.refresh()
         input_window.addstr(15, 0, "Running SBR...")
         input_window.refresh()
         done = False
@@ -318,17 +318,41 @@ def main(stdscr):
             # total_time = (datetime.fromisoformat(end_time) - datetime.fromisoformat(start_time)).total_seconds()
             summary_window.addstr(summary_line_pos, 0, "SBR SUMMARY")
             summary_line_pos += 1
+
+            def print_with_rollover(input, summary_line_pos):
+                print_width = summary_window_width - 4
+                rollover_number = int(len(input)/print_width)
+                for i in range(rollover_number):
+                    summary_window.addstr(summary_line_pos, 0, input[print_width*i:print_width*(i+1)])
+                    summary_line_pos += 1
+                summary_window.addstr(summary_line_pos, 0, input[print_width*rollover_number:])
+                summary_line_pos += 1
+                return summary_line_pos
+
             # summary_window.addstr(2, 0, f"Start Time: {start_time}")
             # summary_window.addstr(3, 0, f"End Time: {end_time}")
             # stdscr.addstr(4, 2, f"Total Time Taken: {total_time:.2f} seconds")
-            summary_window.addstr(summary_line_pos, 0, f"Tested BDFs: {tested_bdfs}")
-            summary_line_pos += int(len(f"Tested BDFs: {tested_bdfs}")/(summary_window_width-4))
-            summary_window.addstr(summary_line_pos, 0, f"Downstream BDFs: {downstream_bdfs}")
-            summary_line_pos += int(len(f"Downstream BDFs: {downstream_bdfs}")/summary_window_width)
-            summary_window.addstr(summary_line_pos, 0, f"Slot Numbers: {slot_numbers}")
-            summary_line_pos += int(len(f"Slot Numbers: {slot_numbers}")/summary_window_width)
-            summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
-            summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
+            # line = f"Tested BDFs: {tested_bdfs}"
+            # if len(line) > (summary_window_width - 4): 
+            #     summary_window.addstr(summary_line_pos, 0, line[:summary_window_width - 4])
+            #     summary_window.addstr(summary_line_pos+1, 0, line[:summary_window_width - 4])
+            # summary_window.addstr(summary_line_pos, 0, f"Tested BDFs: {tested_bdfs}")
+            # summary_line_pos += int(len(f"Tested BDFs: {tested_bdfs}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Downstream BDFs: {downstream_bdfs}")
+            # summary_line_pos += int(len(f"Downstream BDFs: {downstream_bdfs}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Slot Numbers: {slot_numbers}")
+            # summary_line_pos += int(len(f"Slot Numbers: {slot_numbers}")/summary_window_width)
+            # summary_window.addstr(summary_line_pos, 0, f"Slot Test Counts: {slot_test_counts}")
+            # summary_line_pos += int(len(f"Slot Test Counts: {slot_test_counts}")/summary_window_width)
+
+            summary_line_pos = print_with_rollover(f"Tested BDFs:", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"{tested_bdfs}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Downstream BDFs:", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"{downstream_bdfs}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Slot Numbers: {slot_numbers}", summary_line_pos)
+            summary_line_pos = print_with_rollover(f"Slot Test Counts: {slot_test_counts}", summary_line_pos)
+
+
             if errors:
                 summary_window.addstr(summary_line_pos, 0, f"Errors: {len(errors)}")
                 for i, error in enumerate(errors[:5], start=10):  # Display up to 5 errors
