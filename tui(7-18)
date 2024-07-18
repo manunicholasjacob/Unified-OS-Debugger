@@ -274,16 +274,20 @@ def main(stdscr):
     if 'd' in operations:
         summary_window.addstr(summary_line_pos, 0, "629_DIAG SUMMARY")
         summary_line_pos += 1
-        with open("./629_diag_output.txt", "r") as diag_output:
-            lines = diag_output.readlines()
-        test_complete = False
-        for line in lines:
-            if test_complete:
-                summary_window.addstr(summary_line_pos, 0, line)
+        try:
+            with open("./629_diag_output.txt", "r") as diag_output:
+                lines = diag_output.readlines()
+            test_complete = False
+            for line in lines:
+                if test_complete:
+                    summary_window.addstr(summary_line_pos, 0, line)
+                    summary_line_pos += 1
+                if "Fieldiag Testing Completed" in line: test_complete = True
+            if not test_complete:
+                summary_window.addstr(summary_line_pos, 0, "Fieldiag Testing Failed - Check 629_diag_output.txt for more info")
                 summary_line_pos += 1
-            if "Fieldiag Testing Completed" in line: test_complete = True
-        if not test_complete:
-            summary_window.addstr(summary_line_pos, 0, "Fieldiag Testing Failed - Check 629_diag_output.txt for more info")
+        except Exception as e:
+            summary_window.addstr(summary_line_pos, 0, "629-Diag Failed to Run")
             summary_line_pos += 1
         summary_line_pos += 1
         summary_window.refresh()
