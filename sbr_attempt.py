@@ -139,7 +139,7 @@ def progress_bar(iteration, total, prefix, suffix, decimals, length, fill,
     filled_length = int(length * iteration // total)
     bar = fill * filled_length + '-' * (length - filled_length)
     # print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
-    if iteration == 0: newline = 1
+    if iteration == 1: newline = 1
     else: newline = 0
     pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = f'\r{prefix} |{bar}| {percent}% {suffix}', new_line=newline) - 1
     if iteration == total:
@@ -147,9 +147,9 @@ def progress_bar(iteration, total, prefix, suffix, decimals, length, fill,
     return pad_pos
 
 def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
-    stdscr.addstr(0, 0, "Running the test...\n")
-    stdscr.refresh()
-
+    # stdscr.addstr(0, 0, "Running the test...\n")
+    # stdscr.refresh()
+    pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "Running the test...")
     # Initialize variables
     output_lines = []
     start_time = datetime.now()
@@ -212,7 +212,7 @@ def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, wind
         for j in indexlist:
             operation_count += 1
             slot_test_count[slotnumbers[j]] += 1
-            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, window_width, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
+            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, window_width-30, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
             specific_bus_bridge = listbdf[j]
             specific_bus_link = listbdfdown[j]
             desired_values = [bridgecontrollist[indexlist.index(j)], "0043"]
