@@ -220,7 +220,7 @@ def main(stdscr):
         input_window.addstr(15, 0, "Running SBR...")
         input_window.refresh()
         done = False
-        t = threading.Thread(target=animate, args=('d'))
+        t = threading.Thread(target=animate, args=('s'))
         t.start()
         pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Setting error reporting to 0...")
 
