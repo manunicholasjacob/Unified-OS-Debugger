@@ -99,10 +99,7 @@ def gpu_traverse_up():
     except Exception as e:
         pass
 
-    print(gpu_bdf_list)
-    time.sleep(15)
-
-    if len(gpu_bdf_list) == 0:
+    if len(gpu_bdf_list) == 0 or  gpu_bdf_list[0] == ' ':
         gpu_bdf_list = []
         for bdf in all_bdf_list:
             class_code_hex = functions.read_class_clode(bdf)
