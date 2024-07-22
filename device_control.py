@@ -2,6 +2,7 @@
 
 import subprocess
 import time
+import functions
 
 def run_command(command):
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, universal_newlines=True)
@@ -54,7 +55,7 @@ def progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, 
     if iteration == total:
         print()
 
-def process_bdfs(bdfs):
+def process_bdfs(bdfs, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     total_bdfs = len(bdfs)
     for i, bdf in enumerate(bdfs):
         try:
@@ -64,9 +65,10 @@ def process_bdfs(bdfs):
                 modified = modify_hex_last_digit(output)
                 set_command = f"sudo setpci -s {bdf} CAP_EXP+0x08.w={modified}"
                 run_command(set_command)
-                progress_bar(i + 1, total_bdfs, prefix='Processing BDFs', suffix='Complete', length=50)
+                pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Processing BDFs', 'Complete', 1, window_width-37, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
         except Exception as e:
             print(f"Error processing BDF {bdf}: {str(e)}")
+    return pad_pos
 
 # Example usage
 if __name__ == "__main__":
