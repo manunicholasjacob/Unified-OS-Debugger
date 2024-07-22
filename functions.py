@@ -54,8 +54,8 @@ def hex_to_binary(hex_string):
 
 def read_class_code(bdf):
     try:
-        class_control = subprocess.check_output(["setpci", "-s", bdf, "09.w"])
-        return class_control.decode().strip()
+        class_control = subprocess.check_output(["setpci", "-s", bdf, "08.l"])
+        return class_control.decode().strip()[2:]
     except subprocess.CalledProcessError:
         return f"Error reading Bridge Control for {bdf}."
     
