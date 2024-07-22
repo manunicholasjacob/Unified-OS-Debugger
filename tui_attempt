@@ -253,7 +253,7 @@ def main(stdscr):
         # device_window.refresh()
         pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Device control registers reset to original values.")
         done = True
-        input_window.addstr(diag_pos, 0, f"[x]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(2))
+        input_window.addstr(sbr_pos, 0, f"[x]\tRun SBR for {inputnum_loops} loops on slot numbers {slotlist}".expandtabs(2))
         input_window.refresh()
 
     # Display summary screen
