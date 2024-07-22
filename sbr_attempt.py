@@ -212,7 +212,7 @@ def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, wind
         for j in indexlist:
             operation_count += 1
             slot_test_count[slotnumbers[j]] += 1
-            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, window_width-30, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
+            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, window_width-31, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
             specific_bus_bridge = listbdf[j]
             specific_bus_link = listbdfdown[j]
             desired_values = [bridgecontrollist[indexlist.index(j)], "0043"]
@@ -241,8 +241,10 @@ def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, wind
                         with open("output.txt", "w") as file:
                             for line in output_lines:
                                 file.write(line + "\n")
-                        stdscr.addstr(2, 0, "Link status does not match capabilities. Killing the program.")
-                        stdscr.refresh()
+                        # stdscr.addstr(2, 0, "Link status does not match capabilities. Killing the program.")
+                        # stdscr.refresh()
+                        pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "")
+                        pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "Link status does not match capabilities. Killing the program.")
                         return tested_bdf_info
 
     end_time = datetime.now()
@@ -253,7 +255,9 @@ def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, wind
         for line in output_lines:
             file.write(line + "\n")
 
-    stdscr.addstr(2, 0, "Test completed. Check the output.txt file for results.")
-    stdscr.refresh()
+    # stdscr.addstr(2, 0, "Test completed. Check the output.txt file for results.")
+    # stdscr.refresh()
+    pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "")
+    pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "Test completed. Check the output.txt file for results.")
 
     return tested_bdf_info
