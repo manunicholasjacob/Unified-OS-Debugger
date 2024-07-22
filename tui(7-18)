@@ -45,7 +45,7 @@ def main(stdscr):
 
     height = max(len(slot_numbers) + 4, len(gpu_info_list) + 5, 10)
 
-    # slot_window_width = 30
+    slot_window_width = 30
     # slot_window = curses.newwin(height, slot_window_width, 1, 1)
     # display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
     # slot_window.addstr(1, 2, 'Slot Number\tBDF'.expandtabs(5))
