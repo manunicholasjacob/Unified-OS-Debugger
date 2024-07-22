@@ -70,7 +70,7 @@ def main(stdscr):
     gpu_window.refresh()
 
     # Create Output Window
-    output_window_height = height + 21
+    output_window_height = height + 22
     output_window_width = 53
     output_window = curses.newpad(10000, 50)
     output_window_left_corner = [gpu_window_width+2, 1]
@@ -262,7 +262,7 @@ def main(stdscr):
     time.sleep(0.5)
     summary_window_height = output_window_height
     summary_window_width = output_window_width
-    summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, output_window_left_corner[1], output_window_left_corner[0])
+    summary_window = curses.newwin(summary_window_height-4, summary_window_width-4, output_window_left_corner[1], output_window_left_corner[0]+2)
     summary_window_border = curses.newwin(summary_window_height, summary_window_width, output_window_left_corner[1], output_window_left_corner[0])
     display_box(summary_window_border, 10, 41, summary_window_height, summary_window_width, "Test Summary - Press q to Quit")
     summary_window.clear()
