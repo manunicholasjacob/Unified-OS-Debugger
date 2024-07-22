@@ -97,11 +97,15 @@ def gpu_traverse_up():
         bdf_read = [":".join(line.split(':')[1:]) for line in bdf_read]
         gpu_bdf_list = [bdf.lower() for bdf in bdf_read]
     except Exception as e:
+        pass
+
+    if len(gpu_bdf_list) == 0:
         gpu_bdf_list = []
         for bdf in all_bdf_list:
             class_code_hex = functions.read_class_clode(bdf)
             header_type = functions.get_header_type(bdf)
             if class_code_hex[:2] == "03" and header_type == "00": gpu_bdf_list.append(bdf)
+
 
     #get a list of all bdfs with header type 1
     header_bdf_list = [bdf for bdf in all_bdf_list if functions.get_header_type(bdf).startswith("01")]
@@ -152,6 +156,7 @@ def gpu_traverse_up():
         # if a valid physical port was not found, report
         if(not port_found):
             physical_slot_numbers.append(-1)
+    
     # gpu_streams = {gpuBDF : [physical_slot_numbers[i], root_ports[i]] for i, gpuBDF in enumerate(gpu_bdf_list)}
     psb_number = [1, 1, 2, 2, 4, 4, 3, 3] if len(gpu_bdf_list) > 4 else [1, 2, 4, 3]
     connector = ["R1", "SL13, SL14", "SL3, SL4", "SL7, SL8", "SL11, SL12", "R4", "SL1, SL2", "SL5, SL6"] if len(gpu_bdf_list) > 4 else ["R1", "SL7, SL8", "SL11, SL12", "SL5, SL6"]
