@@ -133,7 +133,7 @@ def log_dmidecode_info(log_file):
         with open(log_file, 'a') as log:
             log.write(f"\nError running dmidecode: {str(e)}\n")
 
-def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
+def run_test(user_password, inputnum_loops, kill, slotlist, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, "Running the test...")
     # Initialize variables
     output_lines = []
