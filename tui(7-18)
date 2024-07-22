@@ -72,7 +72,7 @@ def main(stdscr):
     output_window_height = 20
     output_window_width = 55
     output_window = curses.newpad(10000, 55)
-    output_window_border = curses.newwin(output_window_height, output_window_width, height + 2, 50+3)
+    output_window_border = curses.newwin(output_window_height, output_window_width, height + 2, gpu_window_width+3)
     display_box(output_window_border, 10, 41, height, gpu_window_width+3, "Output")
     pad_pos = 0
 
