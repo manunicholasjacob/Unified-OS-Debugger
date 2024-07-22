@@ -2,7 +2,7 @@ import subprocess
 import time
 from datetime import datetime
 from train_time import get_train_time  # Import the get_train_time function
-import gpu_burn_script  # Import for output printing
+import functions
 
 def read_header(bus):
     try:
@@ -133,17 +133,23 @@ def log_dmidecode_info(log_file):
         with open(log_file, 'a') as log:
             log.write(f"\nError running dmidecode: {str(e)}\n")
 
-def progress_bar(iteration, total, output_window, pad_pos, prefix='', suffix='', decimals=1, length=50, fill='█', print_end="\r"):
+def progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', 
+                 window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filled_length = int(length * iteration // total)
     bar = fill * filled_length + '-' * (length - filled_length)
-    output = f'\r{prefix} |{bar}| {percent}% {suffix}'
-    pad_pos = gpu_burn_script.output_print(output_window, 0, 0, 15, 50, pad_pos, output)
+    # print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
+    if iteration == 0: newline = 1
+    else: newline = 0
+    pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = f'\r{prefix} |{bar}| {percent}% {suffix}', new_line=newline) - 1
     if iteration == total:
-        output += '\n'
+        pad_pos = functions.output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "")
     return pad_pos
 
-def run_test(output_window, user_password, inputnum_loops, kill, slotlist, pad_pos):
+def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
+    stdscr.addstr(0, 0, "Running the test...\n")
+    stdscr.refresh()
+
     # Initialize variables
     output_lines = []
     start_time = datetime.now()
@@ -183,6 +189,8 @@ def run_test(output_window, user_password, inputnum_loops, kill, slotlist, pad_p
     bridgecontrollist = []
     link_capabilities = {"upstream": [], "downstream": []}
 
+    tested_bdf_info = {}
+
     # Get maximum train time for selected slots
     max_train_time = 0
     for slot in slotlist:
@@ -204,7 +212,7 @@ def run_test(output_window, user_password, inputnum_loops, kill, slotlist, pad_p
         for j in indexlist:
             operation_count += 1
             slot_test_count[slotnumbers[j]] += 1
-            pad_pos = progress_bar(operation_count, total_operations, output_window, pad_pos, prefix='Progress', suffix='Complete', length=50)
+            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, 20, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
             specific_bus_bridge = listbdf[j]
             specific_bus_link = listbdfdown[j]
             desired_values = [bridgecontrollist[indexlist.index(j)], "0043"]
@@ -214,27 +222,28 @@ def run_test(output_window, user_password, inputnum_loops, kill, slotlist, pad_p
             if i % 2 == 0:
                 current_link_status_hex = read_link_status(specific_bus_link)
                 current_link_status = extract_link_status(current_link_status_hex)
-                if kill == "n":
-                    if current_link_status != link_capabilities["downstream"][indexlist.index(j)]:
-                        error_time = datetime.now()
-                        output_lines.append(f"Reset {i}")
-                        output_lines.append(f"Link status does not match capabilities for bus {specific_bus_link}")
-                        output_lines.append(f"Link Status: {current_link_status}")
-                        output_lines.append(f"Link Capabilities: {link_capabilities['downstream'][indexlist.index(j)]}")
-                        output_lines.append(f"Error Time: {error_time}")
-                elif kill == "y":
-                    if current_link_status != link_capabilities["downstream"][indexlist.index(j)]:
-                        error_time = datetime.now()
-                        output_lines.append(f"Reset {i}")
-                        output_lines.append(f"Link status does not match capabilities for bus {specific_bus_link}")
-                        output_lines.append(f"Link Status: {current_link_status}")
-                        output_lines.append(f"Link Capabilities: {link_capabilities['downstream'][indexlist.index(j)]}")
-                        output_lines.append(f"Error Time: {error_time}")
+                if current_link_status != link_capabilities["downstream"][indexlist.index(j)]:
+                    error_time = datetime.now()
+                    error_info = {
+                        "reset_count": i,
+                        "link_status": current_link_status,
+                        "link_capabilities": link_capabilities["downstream"][indexlist.index(j)],
+                        "error_time": error_time,
+                    }
+                    if slotnumbers[j] in tested_bdf_info:
+                        tested_bdf_info[slotnumbers[j]]["errors"].append(error_info)
+                    else:
+                        tested_bdf_info[slotnumbers[j]] = {
+                            "specific_bus_link": specific_bus_link,
+                            "errors": [error_info],
+                        }
+                    if kill == "y":
                         with open("output.txt", "w") as file:
                             for line in output_lines:
                                 file.write(line + "\n")
-                        pad_pos = gpu_burn_script.output_print(output_window, 0, 0, 15, 50, pad_pos, "Link status does not match capabilities. Killing the program.")
-                        return pad_pos
+                        stdscr.addstr(2, 0, "Link status does not match capabilities. Killing the program.")
+                        stdscr.refresh()
+                        return tested_bdf_info
 
     end_time = datetime.now()
     output_lines.append(f"End Time: {end_time}")
@@ -244,10 +253,7 @@ def run_test(output_window, user_password, inputnum_loops, kill, slotlist, pad_p
         for line in output_lines:
             file.write(line + "\n")
 
-    pad_pos = gpu_burn_script.output_print(output_window, 0, 0, 15, 50, pad_pos, "Test completed. Check the output.txt file for results.")
-    return pad_pos
+    stdscr.addstr(2, 0, "Test completed. Check the output.txt file for results.")
+    stdscr.refresh()
 
-# Example usage
-if __name__ == "__main__":
-    display_slot_numbers()
-    # Example: run_test(3, True, ['00:1f.0', '00:1c.0'])
+    return tested_bdf_info
