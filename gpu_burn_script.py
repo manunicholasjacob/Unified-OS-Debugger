@@ -2,6 +2,7 @@ import subprocess
 from datetime import datetime
 import time
 import curses
+import numpy as np
 import functions
 
 # Function to Print to Output Window
@@ -157,9 +158,19 @@ def gpu_traverse_up():
             physical_slot_numbers.append(-1)
     
     # gpu_streams = {gpuBDF : [physical_slot_numbers[i], root_ports[i]] for i, gpuBDF in enumerate(gpu_bdf_list)}
-    psb_number = [1, 1, 2, 2, 4, 4, 3, 3] if len(gpu_bdf_list) > 4 else [1, 2, 4, 3]
-    connector = ["R1", "SL13, SL14", "SL3, SL4", "SL7, SL8", "SL11, SL12", "R4", "SL1, SL2", "SL5, SL6"] if len(gpu_bdf_list) > 4 else ["R1", "SL7, SL8", "SL11, SL12", "SL5, SL6"]
-    gpu_streams = [[gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[i], connector[i]] for i, gpuBDF in enumerate(gpu_bdf_list)]
+    fryer_slots = [28, 24, 23, 27, 25, 21, 26, 22]
+    psb_number = [1, 1, 2, 2, 4, 4, 3, 3]
+    connector = ["R1", "SL13, SL14", "SL3, SL4", "SL7, SL8", "SL11, SL12", "R4", "SL1, SL2", "SL5, SL6"]
+
+    gpu_streams = []
+    for i, gpuBDF in enumerate(gpu_bdf_list):
+        if physical_slot_numbers[i] in fryer_slots:
+            info_index = fryer_slots.index(physical_slot_numbers[i])
+            gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[info_index], connector[info_index]])
+        else:
+            gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], "N/A", "N/A"])
+
+    # gpu_streams = [[gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[i], connector[i]] for i, gpuBDF in enumerate(gpu_bdf_list)]
     return gpu_streams
 
 def main():
