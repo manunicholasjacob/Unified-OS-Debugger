@@ -79,3 +79,16 @@ def output_print(window, window_offset_y, window_offset_x, window_height, window
         pad_pos += int(len(input)/window_width) + 1
     window.refresh(pad_pos, 0, window_offset_y+1, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
     return pad_pos
+
+def progress_bar(iteration, total, prefix, suffix, decimals, length, fill, 
+                 window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
+    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+    filled_length = int(length * iteration // total)
+    bar = fill * filled_length + '-' * (length - filled_length)
+    # print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
+    if iteration == 1: newline = 1
+    else: newline = 0
+    pad_pos = output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = f'\r{prefix} |{bar}| {percent}% {suffix}', new_line=newline) - 1
+    if iteration == total:
+        pad_pos = output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "")
+    return pad_pos
