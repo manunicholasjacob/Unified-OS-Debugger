@@ -235,7 +235,7 @@ def main(stdscr):
         device_window.addstr(8, 2, "Resetting device control registers...")
         device_window.refresh()
 
-        device_control.reset_to_original_values(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
+        pad_pos = device_control.reset_to_original_values(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
         device_window.addstr(10, 2, "Device control registers reset to original values.")
         device_window.refresh()
