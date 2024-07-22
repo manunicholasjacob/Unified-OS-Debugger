@@ -216,7 +216,7 @@ def main(stdscr):
         device_window.refresh()
 
         bdfs = device_control.get_all_bdfs()
-        device_control.store_original_values(bdfs)
+        pad_pos = device_control.store_original_values(bdfs, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
         pad_pos = device_control.process_bdfs(bdfs, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
         device_window.addstr(5, 2, "Error reporting set to 0.")
