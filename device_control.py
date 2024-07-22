@@ -32,21 +32,21 @@ def store_original_values(bdfs, window, window_offset_y, window_offset_x, window
             output = run_command(command)
             if output:
                 original_values[bdf] = output
-            pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Storing Original Values', 'Complete', 1, window_width-45, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
+            pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Storing Original Values', 'Complete', 1, window_width-44, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
         except Exception as e:
             print(f"Error storing original value for BDF {bdf}: {str(e)}")
     return pad_pos
 
-def reset_to_original_values():
+def reset_to_original_values(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     total_bdfs = len(original_values)
     for i, (bdf, original_value) in enumerate(original_values.items()):
         try:
             set_command = f"sudo setpci -s {bdf} CAP_EXP+0x08.w={original_value}"
             run_command(set_command)
-            #print(f"BDF: {bdf}, Reset to Original: {original_value}")
-            progress_bar(i + 1, total_bdfs, prefix='Resetting Original Values', suffix='Complete', length=50)
+            pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Resetting Original Values', 'Complete', 1, window_width-43, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
         except Exception as e:
             print(f"Error resetting value for BDF {bdf}: {str(e)}")
+    return pad_pos
 
 def progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', print_end="\r"):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
