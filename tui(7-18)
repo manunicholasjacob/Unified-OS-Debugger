@@ -69,7 +69,7 @@ def main(stdscr):
     gpu_window.refresh()
 
     # Create Output Window
-    output_window_height = 20
+    output_window_height = height + 21
     output_window_width = 53
     output_window = curses.newpad(10000, 53)
     output_window_left_corner = [gpu_window_width+2, 1]
