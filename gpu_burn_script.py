@@ -106,9 +106,6 @@ def gpu_traverse_up():
             header_type = functions.get_header_type(bdf)
             if class_code_hex[:2] == "03" and header_type == "00": gpu_bdf_list.append(bdf)
 
-    print(gpu_bdf_list)
-    time.sleep(10000000)
-
     #get a list of all bdfs with header type 1
     header_bdf_list = [bdf for bdf in all_bdf_list if functions.get_header_type(bdf).startswith("01")]
 
