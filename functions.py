@@ -52,9 +52,21 @@ def hex_to_binary(hex_string):
     binary_string = format(int(hex_string, 16), '032b')
     return binary_string
 
-def read_class_clode(bdf):
+def read_class_code(bdf):
     try:
         class_control = subprocess.check_output(["setpci", "-s", bdf, "09.w"])
         return class_control.decode().strip()
     except subprocess.CalledProcessError:
         return f"Error reading Bridge Control for {bdf}."
+    
+def identify_gpus():
+    command_output = execute_shell_command("lspci | cut -d ' ' -f 1")
+    bdf_list = [num for num in command_output.split('\n') if num]
+ 
+    gpus = []
+    for bdf in bdf_list:
+        class_code = read_class_code(bdf)
+        header_type = get_header_type(bdf)
+        if class_code and class_code[:2] == '03' and header_type[-2:] == '00':
+            gpus.append(bdf)
+    return gpus
