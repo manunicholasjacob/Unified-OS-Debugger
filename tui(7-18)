@@ -45,19 +45,19 @@ def main(stdscr):
 
     height = max(len(slot_numbers) + 4, len(gpu_info_list) + 5, 10)
 
-    slot_window_width = 30
-    slot_window = curses.newwin(height, slot_window_width, 1, 1)
-    display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
-    slot_window.addstr(1, 2, 'Slot Number\tBDF'.expandtabs(5))
-    for i, slot in enumerate(slot_numbers):
-        slot = slot.split(" : ")
-        slot_window.addstr(i + 2, 2, '{:<14s} {:<10s}'.format(slot[0], slot[1]))
-    slot_window.refresh()
+    # slot_window_width = 30
+    # slot_window = curses.newwin(height, slot_window_width, 1, 1)
+    # display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
+    # slot_window.addstr(1, 2, 'Slot Number\tBDF'.expandtabs(5))
+    # for i, slot in enumerate(slot_numbers):
+    #     slot = slot.split(" : ")
+    #     slot_window.addstr(i + 2, 2, '{:<14s} {:<10s}'.format(slot[0], slot[1]))
+    # slot_window.refresh()
 
     # Display GPU information 
     gpu_window_height = height  
     gpu_window_width = 75
-    gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, slot_window_width+3)
+    gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, 1)
     display_box(gpu_window, 1, 41, gpu_window_height, gpu_window_width, "GPU Info")
     gpu_window.addstr(2, 2, " GPU |   BDF   | Root Port | Slot | PSB | Connector ")
     gpu_window.addstr(3, 2, "----------------------------------------------------")
