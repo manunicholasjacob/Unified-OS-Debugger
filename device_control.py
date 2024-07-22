@@ -48,14 +48,6 @@ def reset_to_original_values(window, window_offset_y, window_offset_x, window_he
             print(f"Error resetting value for BDF {bdf}: {str(e)}")
     return pad_pos
 
-def progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', print_end="\r"):
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filled_length = int(length * iteration // total)
-    bar = fill * filled_length + '-' * (length - filled_length)
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end=print_end)
-    if iteration == total:
-        print()
-
 def process_bdfs(bdfs, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     total_bdfs = len(bdfs)
     for i, bdf in enumerate(bdfs):
