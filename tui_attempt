@@ -7,6 +7,7 @@ import time
 import run_629_diag
 import itertools
 import threading
+import functions
 
 def main(stdscr):
     curses.echo()
@@ -193,15 +194,15 @@ def main(stdscr):
         input_window.move(15,0)
         input_window.clrtoeol()
         input_window.addstr(15, 0, "Running 629_diag...")
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "")
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "")
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Running 629_diag...")
         input_window.refresh()
         done = False
         t = threading.Thread(target=animate, args=('d'))
         t.start()
         run_629_diag.main()
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "629_Diag Finished Running")
-        pad_pos = gpu_burn_script.output_print(output_window, height + 3, 55, output_window_height, output_window_width, pad_pos, "Output written to ./629_diag_output.txt")
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "629_Diag Finished Running")
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Output written to ./629_diag_output.txt")
         done = True
         input_window.addstr(diag_pos, 0, "[x]\tRun 629 Diag".expandtabs(2))
         input_window.refresh()
@@ -209,36 +210,45 @@ def main(stdscr):
 
     if 's' in operations:
         # Set error reporting to 0
-        device_window_height = 15
-        device_window = curses.newwin(device_window_height, 100, height + 7, 1)
-        display_box(device_window, height + 7, 2, device_window_height, 60, "Device Control Status")
-        device_window.addstr(2, 2, "Setting error reporting to 0...")
-        device_window.refresh()
+        # device_window_height = 15
+        # device_window = curses.newwin(device_window_height, 100, height + 7, 1)
+        # display_box(device_window, height + 7, 2, device_window_height, 60, "Device Control Status")
+        # device_window.addstr(2, 2, "Setting error reporting to 0...")
+        # device_window.refresh()
+        done = False
+        t = threading.Thread(target=animate, args=('d'))
+        t.start()
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Setting error reporting to 0...")
 
         bdfs = device_control.get_all_bdfs()
         pad_pos = device_control.store_original_values(bdfs, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
         pad_pos = device_control.process_bdfs(bdfs, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
-        device_window.addstr(5, 2, "Error reporting set to 0.")
+        # device_window.addstr(5, 2, "Error reporting set to 0.")
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Error reporting set to 0.")
         # device_window.refresh()
 
         # Run the sbr functionality
-        device_window.addstr(7, 2, "Running SBR tests...")
+        # device_window.addstr(7, 2, "Running SBR tests...")
         # device_window.refresh()
-        sbr.run_test(device_window, user_password, inputnum_loops, kill, slotlist, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Error reporting set to 0.")
+        sbr.run_test(user_password, inputnum_loops, kill, slotlist, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
-        device_window.addstr(9, 2, "SBR tests completed.")
-        device_window.refresh()
-        done = True
+        # device_window.addstr(9, 2, "SBR tests completed.")
+        # device_window.refresh()
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "SBR tests completed.")
 
         # Reset device control registers to original values
-        device_window.addstr(8, 2, "Resetting device control registers...")
-        device_window.refresh()
+        # device_window.addstr(8, 2, "Resetting device control registers...")
+        # device_window.refresh()
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Resetting device control registers...")
 
         pad_pos = device_control.reset_to_original_values(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
-        device_window.addstr(10, 2, "Device control registers reset to original values.")
-        device_window.refresh()
+        # device_window.addstr(10, 2, "Device control registers reset to original values.")
+        # device_window.refresh()
+        pad_pos = functions.output_print(output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos, "Device control registers reset to original values.")
+        done = True
 
     # Display summary screen
     input_window.addstr(15, 0, "Generating Summary Window...")
