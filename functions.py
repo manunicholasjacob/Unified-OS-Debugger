@@ -70,3 +70,11 @@ def identify_gpus():
         if class_code and class_code[:2] == '03' and header_type[-2:] == '00':
             gpus.append(bdf)
     return gpus
+
+def output_print(window, window_offset_y, window_offset_x, window_height, window_width, pad_pos, input = "", new_line=1):
+    pady, padx = window.getyx()
+    window.addstr(pady+new_line, 0, input)
+    if pady+1 > window_height-4:  
+        pad_pos += int(len(input)/window_width) + 1
+    window.refresh(pad_pos, 0, window_offset_y+1, window_offset_x, min(curses.LINES-1, window_offset_y + window_height - 3), min(curses.COLS-1, window_offset_x + window_width - 5))
+    return pad_pos
