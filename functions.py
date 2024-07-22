@@ -1,4 +1,5 @@
 import subprocess
+import curses
 
 def execute_shell_command(command):
     try:
