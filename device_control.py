@@ -24,7 +24,7 @@ def modify_hex_last_digit(hex_str):
 # Dictionary to store original values
 original_values = {}
 
-def store_original_values(bdfs):
+def store_original_values(bdfs, window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     total_bdfs = len(bdfs)
     for i, bdf in enumerate(bdfs):
         try:
@@ -33,8 +33,10 @@ def store_original_values(bdfs):
             if output:
                 original_values[bdf] = output
             progress_bar(i + 1, total_bdfs, prefix='Storing Original Values', suffix='Complete', length=50)
+            pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Storing Original Values', 'Complete', 1, window_width-50, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
         except Exception as e:
             print(f"Error storing original value for BDF {bdf}: {str(e)}")
+        return pad_pos
 
 def reset_to_original_values():
     total_bdfs = len(original_values)
@@ -65,7 +67,7 @@ def process_bdfs(bdfs, window, window_offset_y, window_offset_x, window_height, 
                 modified = modify_hex_last_digit(output)
                 set_command = f"sudo setpci -s {bdf} CAP_EXP+0x08.w={modified}"
                 run_command(set_command)
-                pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Processing BDFs', 'Complete', 1, window_width-37, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
+                pad_pos = functions.progress_bar(i + 1, total_bdfs, 'Processing BDFs', 'Complete', 1, window_width-38, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
         except Exception as e:
             print(f"Error processing BDF {bdf}: {str(e)}")
     return pad_pos
