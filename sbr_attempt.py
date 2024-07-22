@@ -133,7 +133,7 @@ def log_dmidecode_info(log_file):
         with open(log_file, 'a') as log:
             log.write(f"\nError running dmidecode: {str(e)}\n")
 
-def progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█', 
+def progress_bar(iteration, total, prefix, suffix, decimals, length, fill, 
                  window, window_offset_y, window_offset_x, window_height, window_width, pad_pos):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filled_length = int(length * iteration // total)
@@ -212,7 +212,7 @@ def run_test(stdscr, user_password, inputnum_loops, kill, slotlist, window, wind
         for j in indexlist:
             operation_count += 1
             slot_test_count[slotnumbers[j]] += 1
-            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, 20, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
+            pad_pos = progress_bar(operation_count, total_operations, 'Progress', 'Complete', 1, window_width, '█', window, window_offset_y, window_offset_x, window_height, window_width, pad_pos)
             specific_bus_bridge = listbdf[j]
             specific_bus_link = listbdfdown[j]
             desired_values = [bridgecontrollist[indexlist.index(j)], "0043"]
