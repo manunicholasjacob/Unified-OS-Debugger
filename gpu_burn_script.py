@@ -155,7 +155,7 @@ def gpu_traverse_up():
         
         # if a valid physical port was not found, report
         if(not port_found):
-            physical_slot_numbers.append(-1)
+            physical_slot_numbers.append(slot_number)
     
     # gpu_streams = {gpuBDF : [physical_slot_numbers[i], root_ports[i]] for i, gpuBDF in enumerate(gpu_bdf_list)}
     fryer_slots = [28, 24, 23, 27, 25, 21, 26, 22]
