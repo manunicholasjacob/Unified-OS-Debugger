@@ -215,6 +215,10 @@ def main(stdscr):
         # display_box(device_window, height + 7, 2, device_window_height, 60, "Device Control Status")
         # device_window.addstr(2, 2, "Setting error reporting to 0...")
         # device_window.refresh()
+        input_window.move(15,0)
+        input_window.clrtoeol()
+        input_window.addstr(15, 0, "Running SBR...")
+        input_window.refresh()
         done = False
         t = threading.Thread(target=animate, args=('d'))
         t.start()
