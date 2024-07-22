@@ -45,7 +45,7 @@ def main(stdscr):
 
     height = max(len(slot_numbers) + 4, len(gpu_info_list) + 5, 10)
 
-    slot_window_width = 30
+    # slot_window_width = 30
     # slot_window = curses.newwin(height, slot_window_width, 1, 1)
     # display_box(slot_window, 1, 1, height, slot_window_width, "Available Slot Numbers")
     # slot_window.addstr(1, 2, 'Slot Number\tBDF'.expandtabs(5))
@@ -56,7 +56,7 @@ def main(stdscr):
 
     # Display GPU information 
     gpu_window_height = height  
-    gpu_window_width = 75
+    gpu_window_width = 57
     gpu_window = curses.newwin(gpu_window_height, gpu_window_width, 1, 1)
     display_box(gpu_window, 1, 41, gpu_window_height, gpu_window_width, "GPU Info")
     gpu_window.addstr(2, 2, " GPU |   BDF   | Root Port | Slot | PSB | Connector ")
@@ -73,12 +73,12 @@ def main(stdscr):
     output_window_width = 55
     output_window = curses.newpad(10000, 55)
     output_window_border = curses.newwin(output_window_height, output_window_width, height + 2, 50+3)
-    display_box(output_window_border, 10, 41, height, slot_window_width+3, "Output")
+    display_box(output_window_border, 10, 41, height, gpu_window_width+3, "Output")
     pad_pos = 0
 
     # Collect user inputs
     input_window_height = 20
-    input_window_width = 50
+    input_window_width = 57
     input_window = curses.newwin(input_window_height-4, input_window_width-4, height + 4, 3)
     input_window_border = curses.newwin(input_window_height, input_window_width, height + 2, 1)
     display_box(input_window_border, height + 2, 1, input_window_height, input_window_width, "Command Line")
