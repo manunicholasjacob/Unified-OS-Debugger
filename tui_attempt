@@ -70,8 +70,8 @@ def main(stdscr):
 
     # Create Output Window
     output_window_height = height + 21
-    output_window_width = 50
-    output_window = curses.newpad(10000, 53)
+    output_window_width = 53
+    output_window = curses.newpad(10000, 50)
     output_window_left_corner = [gpu_window_width+2, 1]
     output_window_border = curses.newwin(output_window_height, output_window_width, output_window_left_corner[1], output_window_left_corner[0])
     display_box(output_window_border, 10, 41, height, gpu_window_width+3, "Output")
@@ -217,7 +217,7 @@ def main(stdscr):
 
         bdfs = device_control.get_all_bdfs()
         device_control.store_original_values(bdfs)
-        device_control.process_bdfs(bdfs)
+        pad_pos = device_control.process_bdfs(bdfs, output_window, output_window_left_corner[1], output_window_left_corner[0]+2, output_window_height, output_window_width, pad_pos)
 
         device_window.addstr(5, 2, "Error reporting set to 0.")
         # device_window.refresh()
