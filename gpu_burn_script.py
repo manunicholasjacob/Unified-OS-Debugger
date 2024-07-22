@@ -163,12 +163,13 @@ def gpu_traverse_up():
     connector = ["R1", "SL13, SL14", "SL3, SL4", "SL7, SL8", "SL11, SL12", "R4", "SL1, SL2", "SL5, SL6"]
 
     gpu_streams = []
-    for i, gpuBDF in enumerate(gpu_bdf_list):
-        if physical_slot_numbers[i] in fryer_slots:
-            info_index = fryer_slots.index(physical_slot_numbers[i])
-            gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[info_index], connector[info_index]])
-        else:
-            gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], "N/A", "N/A"])
+    for i, gpuBDF in enumerate(gpu_bdf_list):   
+        if physical_slot_numbers[i] != 0:
+            if physical_slot_numbers[i] in fryer_slots:
+                info_index = fryer_slots.index(physical_slot_numbers[i])
+                gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[info_index], connector[info_index]])
+            else:
+                gpu_streams.append([gpuBDF, physical_slot_numbers[i], root_ports[i], "N/A", "N/A"])
 
     # gpu_streams = [[gpuBDF, physical_slot_numbers[i], root_ports[i], psb_number[i], connector[i]] for i, gpuBDF in enumerate(gpu_bdf_list)]
     return gpu_streams
