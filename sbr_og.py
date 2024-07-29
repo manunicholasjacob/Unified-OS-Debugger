@@ -43,7 +43,6 @@ def read_secondary_bus_number(bus):
 
 def read_bridge_control(bus):
     try:
-        #print(f"Reading bridge control for bus: {bus}")
         bridge_control_output = subprocess.check_output(["setpci", "-s", bus, "3e.w"])
         return bridge_control_output.decode().strip()
     except subprocess.CalledProcessError:
